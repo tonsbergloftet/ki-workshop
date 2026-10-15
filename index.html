@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KI-verkstedet Larvik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;700&family=Caveat:wght@600&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0}
+img{max-width:100%}
+/* Layout: workshop-vegg med prikkrutenett, post-it-faner øverst, én fase per skjerm, kort med tykk strek og harde skygger */
+:root {
+  --wall: #ffffff;
+  --dot: #d9d9d4;
+  --ink: #121212;
+  --card: #ffffff;
+  --soft: #5b5b57;
+  --onnote: #121212;
+  --yellow: #ffd23f;
+  --pink: #ff9eb1;
+  --mint: #8ee0b8;
+  --lilac: #c4b5ff;
+  --note: var(--yellow);
+  --display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --hand: "Caveat", "Comic Sans MS", cursive;
+  --line: 2.5px solid var(--ink);
+  --shadow: 4px 4px 0 var(--ink);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --wall: #17171b; --dot: #2c2c33; --ink: #f2f2ee; --card: #212127; --soft: #b4b4ae;
+    --yellow: #ffd23f; --pink: #ff9eb1; --mint: #8ee0b8; --lilac: #c4b5ff; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --wall: #17171b; --dot: #2c2c33; --ink: #f2f2ee; --card: #212127; --soft: #b4b4ae;
+  --yellow: #ffd23f; --pink: #ff9eb1; --mint: #8ee0b8; --lilac: #c4b5ff; color-scheme: dark;
+}
+html, body { background: var(--wall); color: var(--ink); }
+body {
+  font-family: var(--body); font-size: 17px; line-height: 1.5;
+  background-image: radial-gradient(var(--dot) 1.4px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 18px 72px; display: flex; flex-direction: column; gap: 26px; }
+
+/* faner */
+nav.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+nav.tabs button {
+  all: unset; cursor: pointer; background: var(--c); color: var(--onnote); border: var(--line); border-radius: 12px;
+  padding: 10px 12px; display: flex; flex-direction: column; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.05rem; line-height: 1.1;
+  transition: transform .12s, box-shadow .12s; opacity: .55;
+}
+nav.tabs button small { font-family: var(--body); font-weight: 500; font-size: 0.75rem; }
+nav.tabs button[aria-current="step"] { opacity: 1; box-shadow: var(--shadow); transform: translate(-2px, -2px); }
+nav.tabs button[data-done="1"] { opacity: .9; }
+nav.tabs button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+section.fase { display: flex; flex-direction: column; gap: 26px; }
+.hero { display: flex; flex-direction: column; gap: 12px; }
+.stamp { align-self: flex-start; background: var(--note); color: var(--onnote); border: var(--line); border-radius: 99px; padding: 3px 14px; font-weight: 700; font-size: 0.85rem; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
+h1 { font-size: clamp(2.3rem, 8vw, 3.6rem); line-height: 0.98; }
+h2 { font-size: clamp(1.9rem, 6vw, 2.7rem); line-height: 1.02; }
+h3 { font-size: 1.3rem; line-height: 1.15; }
+h1 mark, h2 mark { background: linear-gradient(transparent 55%, var(--note) 55%, var(--note) 92%, transparent 92%); color: inherit; padding: 0 .08em; }
+p { margin: 0; max-width: 62ch; }
+.lead { font-size: 1.15rem; color: var(--soft); }
+.hand { font-family: var(--hand); font-size: 1.45rem; line-height: 1.1; }
+
+.steg { display: flex; flex-direction: column; gap: 14px; }
+.steg-head { display: flex; gap: 12px; align-items: center; }
+.num { flex: none; width: 34px; height: 34px; border-radius: 50%; border: var(--line); background: var(--card); display: grid; place-items: center; font-family: var(--display); font-weight: 800; }
+
+.postit { background: var(--note); color: var(--onnote); border: var(--line); border-radius: 4px; padding: 14px 16px; box-shadow: var(--shadow); transform: rotate(-0.8deg); max-width: 520px; display: flex; flex-direction: column; gap: 4px; }
+.postit b { font-family: var(--display); font-weight: 800; }
+.postit.right { transform: rotate(0.7deg); align-self: flex-end; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { all: unset; cursor: pointer; padding: 8px 16px; border: var(--line); border-radius: 99px; background: var(--card); font-weight: 600; font-size: 0.95rem; transition: transform .1s; }
+.chip:hover { transform: translateY(-1px); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--wall); }
+.chip:focus-visible { outline: 3px solid var(--note); outline-offset: 2px; }
+input[type=text] { font: inherit; color: var(--ink); background: var(--card); border: var(--line); border-radius: 12px; padding: 10px 14px; width: 100%; max-width: 360px; box-sizing: border-box; }
+input[type=text]:focus-visible { outline: 3px solid var(--note); outline-offset: 1px; }
+
+.choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.choice {
+  all: unset; cursor: pointer; position: relative; background: var(--card); border: var(--line); border-radius: 16px; padding: 16px;
+  display: flex; flex-direction: column; gap: 6px; min-width: 0; transition: transform .12s, box-shadow .12s;
+}
+.choice:hover { transform: translate(-2px, -2px); box-shadow: var(--shadow); }
+.choice b { font-family: var(--display); font-weight: 800; font-size: 1.15rem; line-height: 1.15; }
+.choice small { color: var(--soft); font-size: 0.92rem; line-height: 1.4; }
+.choice .ic { font-size: 1.6rem; line-height: 1; }
+.choice .badge { position: absolute; top: -12px; right: 12px; background: var(--note); color: var(--onnote); border: var(--line); border-radius: 99px; padding: 0 10px; font-family: var(--hand); font-size: 1.15rem; transform: rotate(3deg); }
+.choice[aria-pressed="true"] { background: var(--note); color: var(--onnote); box-shadow: var(--shadow); transform: translate(-2px, -2px); }
+.choice[aria-pressed="true"] small { color: var(--onnote); }
+.choice:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+/* kopi-kortet */
+.copycard { background: var(--card); border: var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.copycard .what { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.copycard .what h3 { font-size: 1.15rem; }
+.preview { position: relative; color: var(--soft); font-size: 0.95rem; white-space: pre-wrap; word-break: break-word; max-height: 7.5em; overflow: hidden; border-top: 2px dashed var(--dot); padding-top: 12px; }
+.preview::after { content: ""; position: absolute; inset: auto 0 0 0; height: 3em; background: linear-gradient(transparent, var(--card)); }
+.copycard.open .preview { max-height: none; }
+.copycard.open .preview::after { display: none; }
+.link { all: unset; cursor: pointer; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; font-size: 0.92rem; align-self: flex-start; }
+.link:focus-visible { outline: 3px solid var(--note); outline-offset: 2px; }
+
+.btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 22px; border: var(--line); border-radius: 99px; font-family: var(--display); font-weight: 800; font-size: 1.05rem; background: var(--note); color: var(--onnote); box-shadow: var(--shadow); transition: transform .1s, box-shadow .1s; }
+.btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+.btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+.btn.done { background: var(--mint); }
+.btn.plain { background: var(--card); color: var(--ink); }
+.btn.small { padding: 8px 16px; font-size: 0.95rem; }
+.btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.btn[disabled] { opacity: .35; cursor: not-allowed; box-shadow: none; }
+
+.checks { display: flex; flex-direction: column; gap: 10px; }
+.checks label { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-weight: 500; }
+.checks input { appearance: none; flex: none; width: 24px; height: 24px; border: var(--line); border-radius: 6px; background: var(--card); margin: 0; display: grid; place-items: center; cursor: pointer; }
+.checks input:checked { background: var(--note); }
+.checks input:checked::after { content: "✓"; color: var(--onnote); font-weight: 800; font-size: 0.95rem; }
+.checks input:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+.minis { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.mini { background: var(--card); border: var(--line); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.mini b { font-family: var(--display); font-weight: 800; font-size: 1.1rem; }
+.mini p { color: var(--soft); font-size: 0.93rem; }
+
+.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.trio div { border: var(--line); border-radius: 12px; padding: 10px 12px; background: var(--card); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.trio b { font-family: var(--display); font-weight: 800; }
+.trio span { font-size: 0.88rem; color: var(--soft); }
+
+.big { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 6vw, 2.5rem); line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance; }
+.choice-sum { font-weight: 600; }
+.choice-sum em { font-style: normal; background: var(--note); color: var(--onnote); border-radius: 6px; padding: 0 6px; }
+
+footer.nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding-top: 6px; }
+
+[data-fase="laere"] { --note: var(--yellow); }
+[data-fase="lage"] { --note: var(--pink); }
+[data-fase="prove"] { --note: var(--mint); }
+[data-fase="verdi"] { --note: var(--lilac); }
+
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  nav.tabs { gap: 6px; }
+  nav.tabs button { padding: 8px; font-size: 0.92rem; }
+  nav.tabs button small { display: none; }
+  .trio { grid-template-columns: 1fr; }
+  .postit, .postit.right { transform: none; align-self: stretch; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="tabs" id="tabs" aria-label="Faser"></nav>
+
+  <!-- LÆRE -->
+  <section class="fase" id="f-laere" data-fase="laere">
+    <div class="hero">
+      <span class="stamp">Lære · 15 min</span>
+      <h1>Lær. Lag. <mark>Prøv.</mark></h1>
+      <p class="lead">På én time lager du en liten KI-løsning for din egen jobb. Du trenger ikke kunne noe fra før. Kopier, lim inn i Gemini, og svar på det Gemini spør om.</p>
+    </div>
+
+    <div class="postit">
+      <b>To regler for i dag</b>
+      <span>1. Bruk én og samme Gemini-chat hele veien.</span>
+      <span>2. Ingen personopplysninger. Bruk eksempler eller offentlige tekster.</span>
+    </div>
+
+    <div class="steg">
+      <div class="steg-head"><span class="num">1</span><h3>Hva jobber du med?</h3></div>
+      <div class="chips" id="roller"></div>
+      <input type="text" id="rolle-annet" placeholder="Eller skriv selv" aria-label="Skriv rollen din selv">
+    </div>
+
+    <div class="steg">
+      <div class="steg-head"><span class="num">2</span><h3>Hvordan vil du starte?</h3></div>
+      <div class="choices" id="spor"></div>
+    </div>
+
+    <div class="steg" id="ferdige-wrap" hidden>
+      <div class="steg-head"><span class="num">3</span><h3>Velg et oppdrag</h3></div>
+      <div class="choices" id="ferdige"></div>
+    </div>
+
+    <div class="steg" id="laere-copy-wrap" hidden>
+      <div class="steg-head"><span class="num" id="laere-num">3</span><h3>Åpne Gemini og lim inn</h3></div>
+      <p>Gå til <b>gemini.google.com</b>, start en ny chat, og lim inn teksten. Gemini stiller deg noen spørsmål. Svar kort.</p>
+      <div class="copycard" id="c-laere"></div>
+    </div>
+  </section>
+
+  <!-- LAGE -->
+  <section class="fase" id="f-lage" data-fase="lage" hidden>
+    <div class="hero">
+      <span class="stamp">Lage · 20 min</span>
+      <h2>Lag en <mark>første versjon</mark></h2>
+      <p class="lead">Det du lager er en prototype: en skisse du kan vise og teste. Den skal ikke være perfekt, den skal bare finnes.</p>
+    </div>
+    <div class="steg">
+      <div class="steg-head"><span class="num">1</span><h3>Hvilken form skal det ha?</h3></div>
+      <p class="choice-sum" id="form-sum" hidden></p>
+      <div class="choices" id="former"></div>
+    </div>
+    <div class="steg">
+      <div class="steg-head"><span class="num">2</span><h3>Lim inn i samme chat</h3></div>
+      <div class="copycard" id="c-lage"></div>
+      <div class="postit right" id="canvas-tips" hidden>
+        <b>Tips til veilederen</b>
+        <span>Ser du valget <b>Canvas</b> i Gemini, slå det på før du limer inn. Da får du en klikkbar side. Uten Canvas får du veilederen som tekst, og det går også fint.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRØVE -->
+  <section class="fase" id="f-prove" data-fase="prove" hidden>
+    <div class="hero">
+      <span class="stamp">Prøve · 25 min</span>
+      <h2>Test det, gjør det <mark>bedre</mark></h2>
+    </div>
+    <div class="steg">
+      <div class="steg-head"><span class="num">1</span><h3>Test på deg selv</h3></div>
+      <div class="checks" id="checks"></div>
+    </div>
+    <div class="steg">
+      <div class="steg-head"><span class="num">2</span><h3>Gjør én forbedring</h3></div>
+      <div class="minis" id="forbedre"></div>
+    </div>
+    <div class="steg">
+      <div class="steg-head"><span class="num">3</span><h3>Bytt plass med sidemannen</h3></div>
+      <p>Prøv den andres løsning uten at de forklarer noe. Si deretter tre ting:</p>
+      <div class="trio">
+        <div><b>Liker</b><span>Hva fungerte?</span></div>
+        <div><b>Lurer på</b><span>Hva var uklart?</span></div>
+        <div><b>Ønsker</b><span>Hva mangler?</span></div>
+      </div>
+      <p>Bytt tilbake, og gi Gemini tilbakemeldingen du fikk:</p>
+      <div class="copycard" id="c-fb"></div>
+    </div>
+  </section>
+
+  <!-- VERDI -->
+  <section class="fase" id="f-verdi" data-fase="verdi" hidden>
+    <div class="hero">
+      <span class="stamp">Verdi · 10 min</span>
+      <h2>Hva ville dette <mark>gjort for oss?</mark></h2>
+      <p class="lead">Gemini stiller deg tre spørsmål og lager et idékort. Et grovt anslag er helt greit.</p>
+    </div>
+    <div class="copycard" id="c-verdi"></div>
+    <div class="postit">
+      <b>Del idékortet ditt</b>
+      <span>Kopier idékortet fra Gemini og legg det der arrangøren viser deg. Kortene blir en felles idéliste for kommunalområdet.</span>
+    </div>
+    <div class="steg">
+      <p class="big">KI gir deg et godt utkast. Du er fagpersonen som gjør det riktig.</p>
+      <p class="hand">Snakk med sidemannen: Hva overrasket deg? Hva vil du prøve igjen neste uke?</p>
+    </div>
+  </section>
+
+  <footer class="nav">
+    <button class="btn plain small" id="forrige" type="button">← Tilbake</button>
+    <button class="btn" id="neste" type="button">Neste →</button>
+  </footer>
+</div>
+
+<script>
+const FASER = [
+  { id: "laere", navn: "Lære", hint: "Finn noe", c: "var(--yellow)" },
+  { id: "lage", navn: "Lage", hint: "Bygg det", c: "var(--pink)" },
+  { id: "prove", navn: "Prøve", hint: "Test det", c: "var(--mint)" },
+  { id: "verdi", navn: "Verdi", hint: "Hva gir det?", c: "var(--lilac)" }
+];
+const ROLLER = ["HR og personal", "Lønn", "Økonomi", "IKT", "Arkiv", "Kommunikasjon", "Politisk sekretariat", "Leder"];
+const SPOR = [
+  { id: "ferdig", ic: "🎯", navn: "Gi meg et ferdig oppdrag", info: "Alt ligger klart, også eksempeltekst. Fint hvis du er ny med KI.", badge: "anbefalt!" },
+  { id: "eget", ic: "🧭", navn: "Hjelp meg å finne mitt eget", info: "Gemini intervjuer deg om jobben din og foreslår noe du kan lage." }
+];
+const FORMER = [
+  { id: "chatbot", ic: "💬", navn: "Chatbot", info: "Svarer på spørsmål ut fra en tekst, for eksempel en rutine.",
+    tekst: `Lag det nå, som en chatbot her i samtalen:
+- Svar bare ut fra grunnlaget. Står ikke svaret der, si det, og si hvem man kan spørre.
+- Korte svar i klarspråk.
+- Start med en hilsen og tre eksempler på spørsmål man kan stille.
+- Når jeg skriver STOPP, går du ut av rollen.
+Mangler du grunnlag, lag eksempelinnhold og merk det tydelig som eksempel.` },
+  { id: "veileder", ic: "🪜", navn: "Trinnvis veileder", info: "Ett steg om gangen, med detaljer skjult til man trenger dem.",
+    tekst: `Lag det nå, som en trinnvis veileder (i Canvas hvis det er slått på):
+- Ett steg om gangen, med knappene Neste og Tilbake.
+- Korte tekster. Ekstra detaljer skjules bak «Vis mer».
+- Siste steg: hvem man kontakter hvis noe er uklart.
+- Store knapper, god kontrast, fungerer på mobil.
+Mangler du innhold, lag eksempelinnhold og merk det tydelig som eksempel.` },
+  { id: "klarsprak", ic: "✍️", navn: "Klarspråk", info: "Skriver om en tekst så den blir forstått første gang.",
+    tekst: `Lag det nå: skriv teksten om til klarspråk.
+- Korte setninger, «du» til mottakeren, det viktigste først.
+- Ingen fagord eller paragrafer uten forklaring.
+- Vis den nye teksten først, og list så opp hva du endret.
+- Si fra hvis betydningen kan ha endret seg, så jeg kan sjekke det.` }
+];
+const FERDIGE = [
+  { id: "reise", ic: "🧾", form: "chatbot", navn: "Spør reiseregningsrutinen", info: "En chatbot som svarer ansatte om reiseregning.",
+    oppdrag: "en chatbot som svarer ansatte på spørsmål om reiseregning",
+    grunnlag: `GRUNNLAG (fiktiv rutine):
+Reiseregning leveres i reise- og utgiftssystemet senest 30 dager etter reisen. Kjøregodtgjørelse gis bare når bruk av egen bil er avtalt med leder på forhånd. Kvitteringer for overnatting, parkering og billetter lastes opp som bilde eller PDF. Diett dekkes etter statens satser når reisen varer over 6 timer og er over 15 km fra arbeidsstedet. Leder attesterer, og utbetaling skjer med neste lønnskjøring. Spørsmål sendes til lønnsavdelingen.` },
+  { id: "onboarding", ic: "👋", form: "veileder", navn: "Første uke som nyansatt", info: "En veileder som tar nyansatte gjennom første uka.",
+    oppdrag: "en trinnvis veileder som hjelper nyansatte gjennom den første uka",
+    grunnlag: `GRUNNLAG (fiktiv rutine):
+Dag 1: Hent adgangskort i resepsjonen. Leder viser deg kontorplass. Logg inn på PC-en med brukernavn fra velkomst-e-posten og bytt passord.
+Dag 1–2: Ta e-læringskursene i personvern og informasjonssikkerhet (ca. 1,5 time).
+Dag 2: Registrer kontonummer og skattekort i HR-portalen.
+Dag 3: Møt fadderen din, som viser deg timeføring og fraværsrutiner.
+Innen uka er omme: Les verdiplattformen og de etiske retningslinjene. Avtal oppstartssamtale med leder.
+Spørsmål om lønn: lønnsavdelingen. Spørsmål om PC og tilganger: IKT-brukerstøtte.` },
+  { id: "brev", ic: "📨", form: "klarsprak", navn: "Gjør et svarbrev forståelig", info: "Skriv om et stivt brev om permisjon til klarspråk.",
+    oppdrag: "en klarspråkversjon av et svarbrev om permisjon",
+    grunnlag: `GRUNNLAG (fiktivt brev):
+Vedrørende Deres søknad om permisjon. Det vises til Deres søknad om permisjon uten lønn datert 12.08. Søknaden er behandlet i henhold til gjeldende permisjonsreglement, jf. punkt 4.2. Det meddeles herved at søknaden innvilges for perioden 01.11–31.01 under forutsetning av at tjenestemessige hensyn ikke tilsier annet. Det gjøres oppmerksom på at permisjonen medfører opphør av opptjening av feriepenger samt at pensjonsforhold kan bli berørt. Eventuelle spørsmål vedrørende dette rettes til HR-avdelingen.` },
+  { id: "verdi", ic: "🧡", form: "veileder", navn: "Verdiplattformen for nyansatte", info: "Gjør den nye verdiplattformen lett å forstå for en ny kollega.",
+    oppdrag: "en trinnvis veileder som forklarer den nye verdiplattformen for en nyansatt i teamet mitt",
+    grunnlag: `GRUNNLAG:
+Jeg limer inn teksten fra verdiplattformen etter spørsmålene dine. Har jeg den ikke, lag et opplegg med tre tenkte verdier og merk tydelig at de er eksempler.` }
+];
+const SJEKK = [
+  "Stemmer innholdet? Se etter ting som er feil eller funnet på.",
+  "Ville en kollega forstått det uten at du forklarte?",
+  "Mangler det noe viktig?"
+];
+const FORBEDRE = [
+  { navn: "Finn feil", info: "Gemini går kritisk gjennom sitt eget arbeid.", tekst: "Se kritisk på det du har laget. Finn de tre største svakhetene, rett dem, og si hva du endret." },
+  { navn: "Gjør det enklere", info: "Kortere og lettere å forstå.", tekst: "Gjør det enklere og kortere. Fjern alt som ikke er helt nødvendig." }
+];
+
+const state = { fase: 0, rolle: "", spor: "", ferdig: "", form: "" };
+try { Object.assign(state, JSON.parse(localStorage.getItem("ki-verksted-v2") || "{}")); } catch (e) {}
+const lagre = () => { try { localStorage.setItem("ki-verksted-v2", JSON.stringify(state)); } catch (e) {} };
+const $ = (s) => document.querySelector(s);
+const rolle = () => state.rolle || "[din rolle]";
+const ferdig = () => FERDIGE.find(f => f.id === state.ferdig);
+
+function promptLaere() {
+  if (state.spor === "ferdig") {
+    const f = ferdig();
+    if (!f) return "";
+    return `⛔ Ikke lag noe ennå. Les dette, og still meg 2 korte spørsmål om hvem som skal bruke det. Vent på svar.
+
+Jeg jobber med ${rolle()} i Larvik kommune. Jeg vil lage ${f.oppdrag}.
+
+${f.grunnlag}`;
+  }
+  return `⛔ Ikke foreslå noe ennå. Still meg ett spørsmål om gangen, maks tre, om arbeidsdagen min og hva som tar tid. Vent på svar mellom hvert spørsmål.
+
+Jeg jobber med ${rolle()} i Larvik kommune.
+
+Etterpå: Foreslå tre små ting jeg kan lage med KI på 20 minutter, enten en chatbot, en trinnvis veileder eller en tekst i klarspråk. Hjelp meg å velge én. Hvis jeg er usikker, gi meg eksempler.
+
+Bruk hverdagsspråk og korte svar. Minn meg på å ikke dele personopplysninger.`;
+}
+function promptLage() {
+  const form = FORMER.find(f => f.id === state.form);
+  return form ? form.tekst : "";
+}
+const PROMPT_FB = `En kollega har testet det vi laget.
+Liker: …
+Lurer på: …
+Ønsker: …
+Foreslå to forbedringer, og gjør den viktigste.`;
+function promptVerdi() {
+  return `⛔ Still meg tre spørsmål, ett om gangen, og vent på svar mellom hvert:
+1. Hvem har nytte av det vi laget?
+2. Hvor ofte skjer det, og hvor lang tid tar det i dag?
+3. Hva blir bedre som ikke handler om tid?
+
+Hjelp meg å anslå hvis jeg er usikker. Ikke overdriv.
+
+Lag så et kort idékort:
+IDÉ:
+HVEM HAR NYTTE:
+HVA BLIR BEDRE:
+GROVT ANSLAG: (timer per måned, vis regnestykket)
+NESTE STEG:
+Laget av: ${rolle()}, Larvik kommune`;
+}
+
+function kopier(tekst, btn, sel) {
+  const label = btn.dataset.label;
+  const ok = () => { btn.textContent = "Kopiert! Lim inn i Gemini"; btn.classList.add("done"); setTimeout(() => { btn.textContent = label; btn.classList.remove("done"); }, 2400); };
+  const fallback = () => {
+    if (sel) { const r = document.createRange(); r.selectNodeContents(sel); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    btn.textContent = "Teksten er markert. Kopier med Ctrl+C";
+  };
+  try { navigator.clipboard.writeText(tekst).then(ok, fallback); } catch (e) { fallback(); }
+}
+
+function copycard(el, tittel, tekst, label) {
+  el.innerHTML = "";
+  el.classList.remove("open");
+  const what = document.createElement("div"); what.className = "what";
+  const h = document.createElement("h3"); h.textContent = tittel;
+  const btn = document.createElement("button"); btn.type = "button"; btn.className = "btn"; btn.dataset.label = label || "Kopier"; btn.textContent = btn.dataset.label;
+  const pre = document.createElement("div"); pre.className = "preview"; pre.textContent = tekst;
+  const tog = document.createElement("button"); tog.type = "button"; tog.className = "link"; tog.textContent = "Se hele teksten";
+  tog.addEventListener("click", () => { el.classList.toggle("open"); tog.textContent = el.classList.contains("open") ? "Vis mindre" : "Se hele teksten"; });
+  btn.addEventListener("click", () => kopier(tekst, btn, pre));
+  what.append(h, btn);
+  el.append(what, pre, tog);
+}
+
+function choices(el, items, aktiv, pick) {
+  el.innerHTML = "";
+  items.forEach(it => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "choice";
+    b.setAttribute("aria-pressed", String(aktiv(it)));
+    if (it.badge) { const s = document.createElement("span"); s.className = "badge"; s.textContent = it.badge; b.append(s); }
+    const ic = document.createElement("span"); ic.className = "ic"; ic.textContent = it.ic; ic.setAttribute("aria-hidden", "true");
+    const t = document.createElement("b"); t.textContent = it.navn;
+    const s = document.createElement("small"); s.textContent = it.info;
+    b.append(ic, t, s);
+    b.addEventListener("click", () => pick(it));
+    el.append(b);
+  });
+}
+
+function render() {
+  const tabs = $("#tabs"); tabs.innerHTML = "";
+  FASER.forEach((f, i) => {
+    const b = document.createElement("button"); b.type = "button"; b.style.setProperty("--c", f.c);
+    b.innerHTML = `<span></span><small></small>`;
+    b.querySelector("span").textContent = `${i + 1}. ${f.navn}`; b.querySelector("small").textContent = f.hint;
+    if (i === state.fase) b.setAttribute("aria-current", "step");
+    if (i < state.fase) b.dataset.done = "1";
+    b.addEventListener("click", () => gaTil(i));
+    tabs.append(b);
+  });
+  FASER.forEach((f, i) => { $("#f-" + f.id).hidden = i !== state.fase; });
+
+  // Lære
+  const rc = $("#roller"); rc.innerHTML = "";
+  ROLLER.forEach(r => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = r;
+    b.setAttribute("aria-pressed", String(r === state.rolle));
+    b.addEventListener("click", () => { state.rolle = r; $("#rolle-annet").value = ""; lagre(); render(); });
+    rc.append(b);
+  });
+  choices($("#spor"), SPOR, s => s.id === state.spor, s => { state.spor = s.id; if (s.id === "eget") { state.ferdig = ""; } lagre(); render(); });
+  $("#ferdige-wrap").hidden = state.spor !== "ferdig";
+  choices($("#ferdige"), FERDIGE, f => f.id === state.ferdig, f => { state.ferdig = f.id; state.form = f.form; lagre(); render(); });
+  const visLaere = state.spor === "eget" || (state.spor === "ferdig" && state.ferdig);
+  $("#laere-copy-wrap").hidden = !visLaere;
+  $("#laere-num").textContent = state.spor === "ferdig" ? "4" : "3";
+  if (visLaere) copycard($("#c-laere"), state.spor === "ferdig" ? "Start oppdraget" : "Finn oppdraget ditt", promptLaere(), "Kopier");
+
+  // Lage
+  const f = ferdig();
+  const sum = $("#form-sum");
+  if (state.spor === "ferdig" && f) { sum.hidden = false; sum.innerHTML = ""; sum.append("Oppdraget ditt passer som "); const em = document.createElement("em"); em.textContent = (FORMER.find(x => x.id === f.form) || {}).navn || ""; sum.append(em, ". Du kan bytte hvis du vil."); }
+  else { sum.hidden = false; sum.textContent = "Velg formen Gemini anbefalte, eller den du har mest lyst til å prøve."; }
+  choices($("#former"), FORMER, x => x.id === state.form, x => { state.form = x.id; lagre(); render(); });
+  if (state.form) copycard($("#c-lage"), "Lag prototypen", promptLage(), "Kopier");
+  else { $("#c-lage").innerHTML = "<p>Velg en form over, så dukker teksten opp her.</p>"; }
+  $("#canvas-tips").hidden = state.form !== "veileder";
+
+  // Prøve og verdi
+  copycard($("#c-fb"), "Gi Gemini tilbakemeldingen", PROMPT_FB, "Kopier");
+  copycard($("#c-verdi"), "Lag idékortet", promptVerdi(), "Kopier");
+
+  $("#forrige").disabled = state.fase === 0;
+  $("#neste").textContent = state.fase === FASER.length - 1 ? "Til start" : `Videre til ${FASER[state.fase + 1].navn} →`;
+}
+
+function gaTil(i) { state.fase = Math.max(0, Math.min(FASER.length - 1, i)); lagre(); render(); window.scrollTo(0, 0); }
+
+(function statisk() {
+  const c = $("#checks");
+  SJEKK.forEach((t, i) => {
+    const l = document.createElement("label"); l.setAttribute("for", "sj" + i);
+    const inp = document.createElement("input"); inp.type = "checkbox"; inp.id = "sj" + i;
+    const s = document.createElement("span"); s.textContent = t;
+    l.append(inp, s); c.append(l);
+  });
+  const m = $("#forbedre");
+  FORBEDRE.forEach(p => {
+    const d = document.createElement("div"); d.className = "mini";
+    const b = document.createElement("b"); b.textContent = p.navn;
+    const ptag = document.createElement("p"); ptag.textContent = p.info;
+    const btn = document.createElement("button"); btn.type = "button"; btn.className = "btn small"; btn.dataset.label = "Kopier"; btn.textContent = "Kopier";
+    btn.addEventListener("click", () => kopier(p.tekst, btn, null));
+    d.append(b, ptag, btn); m.append(d);
+  });
+})();
+
+$("#rolle-annet").addEventListener("input", e => {
+  state.rolle = e.target.value.trim(); lagre();
+  document.querySelectorAll("#roller .chip").forEach(c => c.setAttribute("aria-pressed", "false"));
+  if (!$("#laere-copy-wrap").hidden) copycard($("#c-laere"), state.spor === "ferdig" ? "Start oppdraget" : "Finn oppdraget ditt", promptLaere(), "Kopier");
+  copycard($("#c-verdi"), "Lag idékortet", promptVerdi(), "Kopier");
+});
+$("#forrige").addEventListener("click", () => gaTil(state.fase - 1));
+$("#neste").addEventListener("click", () => gaTil(state.fase === FASER.length - 1 ? 0 : state.fase + 1));
+if (state.rolle && !ROLLER.includes(state.rolle)) $("#rolle-annet").value = state.rolle;
+render();
+</script>
+</body>
+</html>

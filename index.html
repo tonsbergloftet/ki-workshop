@@ -122,6 +122,7 @@ input[type=text]:focus-visible { outline: 3px solid var(--note); outline-offset:
 .mini { background: var(--card); border: var(--line); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
 .mini b { font-family: var(--display); font-weight: 800; font-size: 1.1rem; }
 .mini p { color: var(--soft); font-size: 0.93rem; }
+.inspo { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
 
 .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .trio div, .trio label { border: var(--line); border-radius: 12px; padding: 10px 12px; background: var(--card); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
@@ -166,7 +167,7 @@ nav.progress { display: grid; grid-template-columns: 2fr 1fr 4fr; gap: 12px; }
 .loop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .loop div { border: 2px dashed var(--soft); border-radius: 12px; padding: 8px 12px; font-size: 0.9rem; display: flex; gap: 8px; align-items: baseline; min-width: 0; }
 .loop b { font-family: var(--display); font-weight: 800; }
-.tilbake { font-family: var(--hand); font-size: 1.35rem; line-height: 1.1; }
+.tipsrad { display: flex; flex-direction: column; gap: 4px; font-size: 0.92rem; color: var(--soft); }
 
 /* felt */
 .felter { display: flex; flex-direction: column; gap: 14px; }
@@ -275,6 +276,17 @@ details.hjelp[open] summary { margin-bottom: 12px; }
       <b>Før du starter</b>
       <span>Gå til <b>gemini.google.com</b> og start en ny chat. Bruk den samme chatten resten av økten.</span>
     </div>
+    <div class="steg">
+      <h3>Dette kan du ende opp med</h3>
+      <p class="muted">Gemini foreslår 2–3 prototyper som passer ditt problem. Alle kan klikkes i og virker.</p>
+      <div class="minis inspo">
+        <div class="mini"><b>🧭 Veiviser</b><p>Tar deg gjennom en søknad eller et vedtak, ett spørsmål om gangen.</p></div>
+        <div class="mini"><b>✅ Sjekkliste</b><p>Huker av det du har gjort, og sier hva som gjenstår.</p></div>
+        <div class="mini"><b>🧮 Kalkulator</b><p>Regner ut ferie, frister eller kostnader på sekunder.</p></div>
+        <div class="mini"><b>💬 KI-assistent</b><p>En chatbot som svarer ut fra en rutine eller et regelverk.</p></div>
+      </div>
+      <p class="muted">Bygger prototypen på en tekst du har, får du også se originalen og den nye, forståelige versjonen side om side.</p>
+    </div>
     <div data-loop></div>
     <div class="copycard" id="c1"></div>
     <details class="hjelp">
@@ -292,9 +304,8 @@ details.hjelp[open] summary { margin-bottom: 12px; }
     <div class="hero">
       <span class="stamp" data-stamp></span>
       <h2>Bygg en <mark>første versjon</mark></h2>
-      <p class="lead">Velg det Gemini anbefalte. Gemini bygger noe som faktisk virker, og som du kan prøve med en gang. Det er en prototype: noe å vise frem og teste, ikke noe som skal i drift.</p>
+      <p class="lead">Gemini bygger prototypen dere ble enige om, og du kan prøve den med en gang. Det er en prototype: noe å vise frem og teste, ikke noe som skal i drift.</p>
     </div>
-    <div class="choices" id="former"></div>
     <div data-loop></div>
     <div class="copycard" id="c2"></div>
   </section>
@@ -365,13 +376,13 @@ details.hjelp[open] summary { margin-bottom: 12px; }
 
 <script>
 const STEG = [
-  { fase: "Lære", navn: "Beskriv problemet" },
-  { fase: "Lære", navn: "Intervju med Gemini", gemini: true },
-  { fase: "Lage", navn: "Bygg prototypen", gemini: true },
-  { fase: "Prøve", navn: "Simulert bruker", gemini: true },
-  { fase: "Prøve", navn: "Test på sidemannen", gemini: true },
-  { fase: "Prøve", navn: "Ny gevinstvurdering", gemini: true },
-  { fase: "Prøve", navn: "Idékortet" }
+  { fase: "Lære", navn: "Beskriv problemet", min: 5 },
+  { fase: "Lære", navn: "Intervju med Gemini", min: 12 },
+  { fase: "Lage", navn: "Bygg prototypen", min: 13 },
+  { fase: "Prøve", navn: "Simulert bruker", min: 8 },
+  { fase: "Prøve", navn: "Test på sidemannen", min: 10 },
+  { fase: "Prøve", navn: "Ny gevinstvurdering", min: 7 },
+  { fase: "Prøve", navn: "Idékortet", min: 5 }
 ];
 const FASEFARGE = { "Lære": "var(--yellow)", "Lage": "var(--pink)", "Prøve": "var(--mint)" };
 const TILBAKE = "➜ Gå tilbake til nettsiden og trykk «Neste».";
@@ -382,40 +393,8 @@ const ROLLER = {
   "IT": "Brukerstøtte får mange like henvendelser om passord, skrivere og tilganger.",
   "Dokumentsenteret": "Ansatte er usikre på hva som skal arkiveres, og hvordan."
 };
-const STIL = "Stil: lys bakgrunn, mørk tekst, én tydelig aksentfarge, store avrundede knapper, god kontrast, fungerer på mobil.";
-const TYPER = [
-  { id: "prototype", ic: "🧩", navn: "Klikkbar app", info: "En liten app, veileder eller et skjema du kan klikke i.", canvas: true,
-    tekst: `HVA DU BYGGER: En klikkbar app
-- En liten app, veileder eller et skjema som løser ideen fra steg 2.
-- Forside med tittel, én setning om hvem den er for, og en tydelig startknapp.
-- Alt skal virke: knapper går videre, skjemaer kan fylles ut, valg gir svar. Ingen tomme knapper og ingen «kommer senere».
-- Bare det viktigste. Ingen innlogging, ingen lagring, ingen ekte persondata.
-- ${STIL}` },
-  { id: "chatbot", ic: "💬", navn: "Chatbot", info: "Et chatvindu som svarer ut fra en rutine eller tekst.", canvas: true,
-    tekst: `HVA DU BYGGER: En chatbot-app med eget chatvindu
-- Et ekte chatgrensesnitt: navn og velkomstmelding øverst, meldingsbobler, et tekstfelt og en Send-knapp.
-- Tre eksempelspørsmål som klikkbare knapper under velkomstmeldingen.
-- Legg grunnlaget (rutinen eller teksten) inn i koden. Når jeg skriver et spørsmål, finner appen det beste svaret i grunnlaget med enkel ordmatching, og viser «Kilde:» under svaret.
-- Finner den ikke noe svar, skal den si det og fortelle hvem man kan spørre.
-- Korte svar i klarspråk.
-- ${STIL}` },
-  { id: "klarsprak", ic: "✉️", navn: "Klarspråk", info: "Et stivt brev eller en tung tekst gjort forståelig.", canvas: true,
-    tekst: `HVA DU BYGGER: En side med den ferdige teksten i klarspråk
-- Vis den nye teksten ferdig formatert, klar til bruk. Ikke råd om hvordan den kan skrives.
-- Er det et brev, sett det opp som et brev:
-  LARVIK KOMMUNE · [Avdeling] · [dato]
-  Til: [mottaker]
-  Overskrift som sier hva det gjelder og hva svaret er
-  Det viktigste først, korte avsnitt, «du» til mottakeren
-  Hva må du gjøre nå? (bare hvis mottakeren må gjøre noe)
-  Har du spørsmål? (hvem man kontakter)
-  Med vennlig hilsen, [navn], [rolle]
-- En bryter øverst: «Før» og «Etter», så jeg kan bytte mellom originalen og den nye teksten.
-- Under teksten: en liste med de fem viktigste endringene og hvorfor.
-- Stil: ser ut som et ryddig brev på hvit bakgrunn, god kontrast, fungerer på mobil.` }
-];
 const FERDIGE = [
-  { id: "it", ic: "🖥️", type: "chatbot", navn: "Spør IT-brukerstøtte", info: "Mange like spørsmål om passord, skrivere og tilganger.",
+  { id: "it", ic: "🖥️", navn: "Spør IT-brukerstøtte", info: "Mange like spørsmål om passord, skrivere og tilganger.",
     problem: "IT-brukerstøtte får mange like spørsmål om passord, skrivere og tilganger, som allerede står i rutinene.",
     bedre: "Ansatte får raskere svar, og brukerstøtte får mer tid til vanskelige saker.",
     grunnlag: `GRUNNLAG (fiktiv rutine):
@@ -425,12 +404,12 @@ Skriver: Velg «Følg meg»-skriveren og hent utskriften med adgangskortet på h
 Tilgang til fagsystem: Leder bestiller i selvbetjeningsportalen. Det kan ta opptil tre virkedager.
 Mistenkelig e-post: Ikke klikk på lenker. Trykk «Rapporter» i e-postprogrammet.
 Brukerstøtte er åpen hverdager kl. 08–15.30.` },
-  { id: "brev", ic: "✉️", type: "klarsprak", navn: "Et stivt svarbrev", info: "Brev om permisjon som mottakerne ikke forstår.",
+  { id: "brev", ic: "✉️", navn: "Et stivt svarbrev", info: "Brev om permisjon som mottakerne ikke forstår.",
     problem: "Svarbrevene våre om permisjon er så stive at folk ringer for å spørre hva de betyr.",
     bedre: "Mottakerne forstår brevet første gang, og vi får færre oppfølgingsspørsmål.",
     grunnlag: `GRUNNLAG (fiktivt brev):
 Vedrørende Deres søknad om permisjon. Det vises til Deres søknad om permisjon uten lønn datert 12.08. Søknaden er behandlet i henhold til gjeldende permisjonsreglement, jf. punkt 4.2. Det meddeles herved at søknaden innvilges for perioden 01.11–31.01 under forutsetning av at tjenestemessige hensyn ikke tilsier annet. Det gjøres oppmerksom på at permisjonen medfører opphør av opptjening av feriepenger samt at pensjonsforhold kan bli berørt. Eventuelle spørsmål vedrørende dette rettes til HR-avdelingen.` },
-  { id: "onboarding", ic: "👋", type: "prototype", navn: "Første uke som nyansatt", info: "Nyansatte vet ikke hva de skal gjøre først.",
+  { id: "onboarding", ic: "👋", navn: "Første uke som nyansatt", info: "Nyansatte vet ikke hva de skal gjøre først.",
     problem: "Nyansatte får mye informasjon på en gang den første uka og vet ikke hva de skal gjøre først.",
     bedre: "Nyansatte kommer tryggere i gang, og leder slipper å forklare det samme hver gang.",
     grunnlag: `GRUNNLAG (fiktiv rutine):
@@ -483,42 +462,42 @@ DIN OPPGAVE NÅ: Intervju meg, slik at vi lander én liten idé. Ikke lag noe en
 - Hvis jeg er usikker, gi meg to–tre eksempler å velge mellom.
 
 RAMMER FOR IDEEN:
-- Må kunne lages på 15 minutter, uten tilgang til fagsystemer og uten ekte personopplysninger.
-- Må være én av disse tre: Klikkbar app, Chatbot eller Klarspråk.
+- Resultatet skal bli en fungerende, klikkbar prototype som kan lages på 15 minutter.
+- Maks fem skjermer. Ingen kobling til fagsystemer, ingen innlogging, ingen ekte personopplysninger.
 
-NÅR INTERVJUET ER FERDIG, oppsummer kort:
-- IDEEN: én setning
-- ANBEFALT TYPE: Klikkbar app, Chatbot eller Klarspråk
-- GEVINST I DAG: hvor ofte × hvor lang tid = grovt anslag i timer per måned, og hva som blir bedre utover tid
-Spør om jeg er enig. Når jeg er enig, skriv: «Velg [ANBEFALT TYPE] på nettsiden.» og avslutt med tilbake-linjen.
+NÅR INTERVJUET ER FERDIG:
+- Foreslå 2–3 ulike prototyper som passer problemet, for eksempel en veiviser, en sjekkliste, en kalkulator eller en KI-assistent. Én setning om hver.
+- La meg velge én, og vent på svar.
+- Oppsummer så kort:
+  IDEEN: én setning om prototypen jeg valgte
+  GEVINST I DAG: hvor ofte × hvor lang tid = grovt anslag i timer per måned, og hva som blir bedre utover tid
+- Avslutt med tilbake-linjen.
 ${f ? "\n" + f.grunnlag + "\n" : ""}
 Start nå med Spørsmål 1 av 5, og ingenting annet.`;
 }
 function p2() {
-  const t = TYPER.find(x => x.id === state.type);
-  if (!t) return "";
   return `▶ STEG 3: LAGE
 
-Nå skal du BYGGE en første versjon av ideen fra steg 2, som en interaktiv app i Canvas.
+Bygg prototypen vi ble enige om i steg 2, som en fungerende app i Canvas.
 
-SLIK SKAL DU BYGGE – UANSETT TYPE:
-- Åpne Canvas selv og bygg appen der: komplett, kjørbar kode (HTML, CSS og JavaScript i én fil), slik at jeg kan klikke og bruke den i forhåndsvisningen med en gang.
-- IKKE beskriv appen, ikke lag en plan eller skisse, og ikke spill rollen i chatten. Bygg den.
-- Svaret ditt skal være Canvas-appen. Ikke be meg slå på noe, og ikke lever koden bare som tekst i chatten.
+KRAV:
+- Én HTML-side i Canvas som jeg kan klikke og bruke i forhåndsvisningen med en gang. Ikke beskriv den, bygg den.
+- Alt skal virke fra start til slutt. Ingen døde knapper.
+- Maks fem skjermer.
+- Fiktive data, ingen personopplysninger. Eksempelinnhold merkes som eksempel.
+- All tekst i klarspråk.
+- Bygger den på en tekst jeg har lagt ved, skal den ha en Før/Etter-bryter som viser originalen og den nye versjonen.
+- Lys bakgrunn, god kontrast, store knapper, fungerer på mobil.
 
-FØR DU BYGGER:
-- Blir løsningen bedre med en rutine, mal eller tekst jeg har, og har jeg ikke lagt ved noe ennå: spør om jeg vil laste opp en fil eller lime inn tekst (uten personopplysninger). STOPP og vent på svar.
-- Sier jeg nei, lag realistisk eksempelinnhold og merk det tydelig som eksempel i appen.
-- Ellers: begynn å bygge med en gang, uten flere spørsmål.
+Har jeg ikke lagt ved noe, og prototypen blir bedre med en rutine eller tekst jeg har: spør om jeg vil legge den ved, og vent på svar. Ellers: bygg med en gang.
 
-${t.tekst}
-
-Når appen er ferdig i Canvas: skriv én setning om hva du har laget og hvordan jeg prøver det. Ikke foreslå forbedringer. Avslutt med tilbake-linjen.`;
+Når appen er ferdig: skriv én setning om hvordan jeg prøver den, og avslutt med tilbake-linjen.`;
 }
 const P3 = `▶ STEG 4: PRØVE – simulert bruker
 
 Spill en realistisk bruker fra målgruppen vi snakket om i steg 2. Gi personen et navn, en situasjon og litt tidspress.
 - La personen bruke løsningen vår i tre korte scener. Beskriv hva personen skriver, klikker på og leser i appen, og hvor hen stopper opp eller misforstår.
+- Se også etter knapper som ikke virker og ord brukeren ikke forstår.
 - Vær ærlig. Ikke vær snill.
 - List så opp de tre viktigste funnene, rangert.
 - Spør hvilket funn jeg vil rette, og VENT på svar.
@@ -605,7 +584,10 @@ function loop(nr) {
     const x = el("div"); x.append(el("b", null, n), el("span", null, t)); d.append(x);
   });
   const wrap = el("div", "steg");
-  wrap.append(d, el("p", "tilbake", `Hopper Gemini videre for tidlig? Skriv: «Vent, vi er på steg ${nr}.»`));
+  const tips = el("div", "tipsrad");
+  tips.append(el("p", null, `Hopper Gemini videre for tidlig? Skriv: «Vent, vi er på steg ${nr}.»`),
+    el("p", null, "Henger du etter? Skriv: «Vi har dårlig tid. Avslutt dette steget nå med det du har.»"));
+  wrap.append(d, tips);
   return wrap;
 }
 
@@ -677,7 +659,7 @@ function render() {
   STEG.forEach((s, i) => {
     const sec = $("#s" + (i + 1));
     sec.hidden = i !== state.steg;
-    sec.querySelector("[data-stamp]").textContent = `${s.fase} · steg ${i + 1} av ${STEG.length}`;
+    sec.querySelector("[data-stamp]").textContent = `${s.fase} · steg ${i + 1} av ${STEG.length} · ca. ${s.min} min`;
   });
 
   const rc = $("#roller"); rc.innerHTML = "";
@@ -689,15 +671,12 @@ function render() {
   });
   $("#problem").placeholder = ROLLER[state.rolle] ? "For eksempel: " + ROLLER[state.rolle] : "Skriv med egne ord …";
   choices($("#ferdige"), FERDIGE, f => !!ferdig() && f.id === state.ferdig, f => {
-    Object.assign(state, { ferdig: f.id, problem: f.problem, bedre: f.bedre, type: f.type });
+    Object.assign(state, { ferdig: f.id, problem: f.problem, bedre: f.bedre });
     $("#problem").value = f.problem; $("#bedre").value = f.bedre; lagre(); render();
   });
 
   copycard($("#c1"), "Steg 2: Intervju", p1());
-  choices($("#former"), TYPER, x => x.id === state.type, x => { state.type = x.id; lagre(); render(); });
-  const t = TYPER.find(x => x.id === state.type);
-  if (t) copycard($("#c2"), "Steg 3: Bygg", p2());
-  else { $("#c2").innerHTML = ""; $("#c2").append(el("p", null, "Velg typen Gemini anbefalte, så dukker teksten opp her.")); }
+  copycard($("#c2"), "Steg 3: Bygg", p2());
   copycard($("#c3"), "Steg 4: Simulert bruker", P3);
   copycard($("#c4"), "Steg 5: Tilbakemelding", p4());
   copycard($("#c5"), "Steg 6: Ny gevinstvurdering", P5);

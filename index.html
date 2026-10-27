@@ -49,18 +49,6 @@ body {
 }
 .wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 18px 72px; display: flex; flex-direction: column; gap: 26px; }
 
-/* faner */
-nav.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-nav.tabs button {
-  all: unset; cursor: pointer; background: var(--c); color: var(--onnote); border: var(--line); border-radius: 12px;
-  padding: 10px 12px; display: flex; flex-direction: column; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.05rem; line-height: 1.1;
-  transition: transform .12s, box-shadow .12s; opacity: .55;
-}
-nav.tabs button small { font-family: var(--body); font-weight: 500; font-size: 0.75rem; }
-nav.tabs button[aria-current="step"] { opacity: 1; box-shadow: var(--shadow); transform: translate(-2px, -2px); }
-nav.tabs button[data-done="1"] { opacity: .9; }
-nav.tabs button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-
 section.fase { display: flex; flex-direction: column; gap: 26px; }
 .hero { display: flex; flex-direction: column; gap: 12px; }
 .stamp { align-self: flex-start; background: var(--note); color: var(--onnote); border: var(--line); border-radius: 99px; padding: 3px 14px; font-weight: 700; font-size: 0.85rem; }
@@ -136,9 +124,11 @@ input[type=text]:focus-visible { outline: 3px solid var(--note); outline-offset:
 .mini p { color: var(--soft); font-size: 0.93rem; }
 
 .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.trio div { border: var(--line); border-radius: 12px; padding: 10px 12px; background: var(--card); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.trio div, .trio label { border: var(--line); border-radius: 12px; padding: 10px 12px; background: var(--card); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .trio b { font-family: var(--display); font-weight: 800; }
 .trio span { font-size: 0.88rem; color: var(--soft); }
+.trio textarea.fb { font: inherit; color: var(--ink); background: var(--wall); border: 2px solid var(--dot); border-radius: 8px; padding: 6px 8px; margin-top: 6px; width: 100%; box-sizing: border-box; resize: vertical; }
+.trio textarea.fb:focus-visible { outline: 3px solid var(--note); outline-offset: 1px; border-color: var(--ink); }
 
 .big { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 6vw, 2.5rem); line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance; }
 .choice-sum { font-weight: 600; }
@@ -153,122 +143,218 @@ footer.nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap
 
 @media (max-width: 560px) {
   body { font-size: 16px; }
-  nav.tabs { gap: 6px; }
-  nav.tabs button { padding: 8px; font-size: 0.92rem; }
-  nav.tabs button small { display: none; }
   .trio { grid-template-columns: 1fr; }
   .postit, .postit.right { transform: none; align-self: stretch; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+.muted { color: var(--soft); }
+[data-fase="lage"] { --note: var(--pink); }
+
+/* fremdrift: tre faser med steg-prikker */
+nav.progress { display: grid; grid-template-columns: 2fr 1fr 4fr; gap: 12px; }
+.grp { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.grp > span { font-family: var(--display); font-weight: 800; font-size: 0.95rem; opacity: .5; }
+.grp.aktiv > span { opacity: 1; }
+.dots { display: flex; gap: 5px; }
+.dots button { all: unset; cursor: pointer; flex: 1; height: 12px; border: 2px solid var(--ink); border-radius: 99px; background: var(--card); transition: height .12s; }
+.dots button[data-done="1"] { background: var(--c); }
+.dots button[aria-current="step"] { background: var(--c); height: 20px; box-shadow: 2px 2px 0 var(--ink); }
+.dots button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+/* rytmen: kopier → Gemini → tilbake */
+.loop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.loop div { border: 2px dashed var(--soft); border-radius: 12px; padding: 8px 12px; font-size: 0.9rem; display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.loop b { font-family: var(--display); font-weight: 800; }
+.tilbake { font-family: var(--hand); font-size: 1.35rem; line-height: 1.1; }
+
+/* felt */
+.felter { display: flex; flex-direction: column; gap: 14px; }
+.problem { background: var(--note); color: var(--onnote); border: var(--line); border-radius: 4px; box-shadow: var(--shadow); padding: 14px 18px 10px; display: flex; flex-direction: column; gap: 4px; }
+.problem:nth-child(1) { transform: rotate(-0.6deg); }
+.problem:nth-child(2) { transform: rotate(0.5deg); background: var(--mint); }
+.problem label { font-family: var(--display); font-weight: 800; font-size: 1.05rem; }
+.problem textarea { all: unset; font-family: var(--hand); font-size: 1.6rem; line-height: 1.15; min-height: 2.4em; width: 100%; color: var(--onnote); white-space: pre-wrap; overflow-wrap: anywhere; }
+.problem textarea::placeholder { color: var(--onnote); opacity: .45; }
+.problem:focus-within { outline: 3px solid var(--ink); outline-offset: 3px; }
+textarea.field { font: inherit; color: var(--ink); background: var(--card); border: var(--line); border-radius: 12px; padding: 10px 14px; width: 100%; box-sizing: border-box; min-height: 64px; resize: vertical; }
+textarea.field:focus-visible { outline: 3px solid var(--note); outline-offset: 1px; }
+details.hjelp { border: 2px dashed var(--soft); border-radius: 14px; padding: 12px 14px; }
+details.hjelp summary { cursor: pointer; font-weight: 700; }
+details.hjelp[open] summary { margin-bottom: 12px; }
+.rules { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rules div { border: var(--line); border-radius: 12px; padding: 10px 14px; background: var(--card); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.rules b { font-family: var(--display); font-weight: 800; }
+.rules ul { margin: 0; padding-left: 1.1em; font-size: 0.93rem; }
+.rules .ja b::before { content: "✓ "; }
+.rules .nei b::before { content: "✕ "; }
+
+/* idékort */
+.kort { --k: var(--mint); background: var(--card); color: var(--ink); border: var(--line); border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); overflow: hidden; }
+.kort .band { background: var(--k); color: var(--onnote); border-bottom: var(--line); padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.kort .band span:last-child { background: var(--card); color: var(--ink); border: 2px solid var(--onnote); border-radius: 99px; padding: 1px 10px; letter-spacing: 0; text-transform: none; }
+.kort .body { padding: 18px; display: flex; flex-direction: column; gap: 18px; }
+.kort h3.tittel { font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.05; }
+.kort .par { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: stretch; }
+.kort .par > div { border: var(--line); border-radius: 12px; padding: 10px 12px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.kort .par .pil { align-self: center; font-family: var(--display); font-weight: 800; font-size: 1.5rem; }
+.kort .par .los { background: var(--k); color: var(--onnote); }
+.kort .lbl { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; opacity: .75; }
+.kort .tall { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.kort .tall div { border: var(--line); border-radius: 12px; padding: 10px 12px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.kort .tall b { font-family: var(--display); font-weight: 800; font-size: 1.05rem; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.kort .tall .hoved { background: var(--ink); color: var(--card); }
+.kort .seksjoner { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+.kort .seksjoner div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.kort .laerte { border-top: 2px dashed var(--dot); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.kort .laerte p { font-family: var(--hand); font-size: 1.4rem; line-height: 1.15; }
+.kort .fot { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 0.82rem; color: var(--soft); border-top: 2px solid var(--dot); padding-top: 10px; }
+.kort-knapper { display: flex; flex-wrap: wrap; gap: 10px; }
+.feil { font-weight: 600; border: var(--line); border-radius: 12px; padding: 10px 14px; background: var(--pink); color: var(--onnote); }
+
+@media (max-width: 560px) {
+  nav.progress { gap: 8px; }
+  .grp > span { font-size: 0.8rem; }
+  .loop, .rules, .kort .seksjoner, .kort .tall, .kort .par { grid-template-columns: 1fr; }
+  .kort .par .pil { transform: rotate(90deg); justify-self: center; }
+  .problem:nth-child(n) { transform: none; }
+}
+@media print {
+  body { background: #fff !important; }
+  body * { visibility: hidden; }
+  #kort, #kort * { visibility: visible; }
+  #kort { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
 </style>
 </head>
 <body>
 
 <div class="wrap">
-  <nav class="tabs" id="tabs" aria-label="Faser"></nav>
+  <nav class="progress" id="progress" aria-label="Fremdrift"></nav>
 
-  <!-- LÆRE -->
-  <section class="fase" id="f-laere" data-fase="laere">
+  <!-- 1 BESKRIV -->
+  <section class="fase" id="s1" data-fase="laere">
     <div class="hero">
-      <span class="stamp">Lære · 15 min</span>
-      <h1>Lær. Lag. <mark>Prøv.</mark></h1>
-      <p class="lead">På én time lager du en liten KI-løsning for din egen jobb. Du trenger ikke kunne noe fra før. Kopier, lim inn i Gemini, og svar på det Gemini spør om.</p>
+      <span class="stamp" data-stamp></span>
+      <h1>Lære. Lage. <mark>Prøve.</mark></h1>
+      <p class="lead">På én time lager du en liten KI-løsning på et problem fra din egen jobb. Appen viser deg hva du skal gjøre, og når du skal bytte mellom appen og Gemini.</p>
     </div>
-
-    <div class="postit">
-      <b>To regler for i dag</b>
-      <span>1. Bruk én og samme Gemini-chat hele veien.</span>
-      <span>2. Ingen personopplysninger. Bruk eksempler eller offentlige tekster.</span>
-    </div>
-
     <div class="steg">
-      <div class="steg-head"><span class="num">1</span><h3>Hva jobber du med?</h3></div>
+      <h3>Hva jobber du med?</h3>
       <div class="chips" id="roller"></div>
       <input type="text" id="rolle-annet" placeholder="Eller skriv selv" aria-label="Skriv rollen din selv">
     </div>
-
     <div class="steg">
-      <div class="steg-head"><span class="num">2</span><h3>Hvordan vil du starte?</h3></div>
-      <div class="choices" id="spor"></div>
-    </div>
-
-    <div class="steg" id="ferdige-wrap" hidden>
-      <div class="steg-head"><span class="num">3</span><h3>Velg et oppdrag</h3></div>
-      <div class="choices" id="ferdige"></div>
-    </div>
-
-    <div class="steg" id="laere-copy-wrap" hidden>
-      <div class="steg-head"><span class="num" id="laere-num">3</span><h3>Åpne Gemini og lim inn</h3></div>
-      <p>Gå til <b>gemini.google.com</b>, start en ny chat, og lim inn teksten. Gemini stiller deg noen spørsmål. Svar kort.</p>
-      <div class="copycard" id="c-laere"></div>
-    </div>
-  </section>
-
-  <!-- LAGE -->
-  <section class="fase" id="f-lage" data-fase="lage" hidden>
-    <div class="hero">
-      <span class="stamp">Lage · 20 min</span>
-      <h2>Lag en <mark>første versjon</mark></h2>
-      <p class="lead">Det du lager er en prototype: en skisse du kan vise og teste. Den skal ikke være perfekt, den skal bare finnes.</p>
-    </div>
-    <div class="steg">
-      <div class="steg-head"><span class="num">1</span><h3>Hvilken form skal det ha?</h3></div>
-      <p class="choice-sum" id="form-sum" hidden></p>
-      <div class="choices" id="former"></div>
-    </div>
-    <div class="steg">
-      <div class="steg-head"><span class="num">2</span><h3>Lim inn i samme chat</h3></div>
-      <div class="copycard" id="c-lage"></div>
-      <div class="postit right" id="canvas-tips" hidden>
-        <b>Tips til veilederen</b>
-        <span>Ser du valget <b>Canvas</b> i Gemini, slå det på før du limer inn. Da får du en klikkbar side. Uten Canvas får du veilederen som tekst, og det går også fint.</span>
+      <h3>Hva vil du gjøre noe med?</h3>
+      <div class="felter">
+        <div class="problem">
+          <label for="problem">Hvilket problem skal fikses?</label>
+          <textarea id="problem" rows="2" placeholder="Skriv med egne ord …"></textarea>
+        </div>
+        <div class="problem">
+          <label for="bedre">Hva skal bli bedre?</label>
+          <textarea id="bedre" rows="2" placeholder="For eksempel: raskere svar, færre feil, mindre frustrasjon …"></textarea>
+        </div>
       </div>
+      <p class="muted">Det trenger ikke være gjennomtenkt. Gemini hjelper deg å spisse det.</p>
+      <details class="hjelp">
+        <summary>Står du fast? Lån et problem</summary>
+        <div class="choices" id="ferdige"></div>
+      </details>
     </div>
   </section>
 
-  <!-- PRØVE -->
-  <section class="fase" id="f-prove" data-fase="prove" hidden>
+  <!-- 2 INTERVJU -->
+  <section class="fase" id="s2" data-fase="laere" hidden>
     <div class="hero">
-      <span class="stamp">Prøve · 25 min</span>
-      <h2>Test det, gjør det <mark>bedre</mark></h2>
+      <span class="stamp" data-stamp></span>
+      <h2>Spiss ideen <mark>sammen med Gemini</mark></h2>
+      <p class="lead">Gemini intervjuer deg om problemet og hva det koster i dag. Til slutt får du en idé som er liten nok til å lage på 15 minutter.</p>
     </div>
-    <div class="steg">
-      <div class="steg-head"><span class="num">1</span><h3>Test på deg selv</h3></div>
-      <div class="checks" id="checks"></div>
-    </div>
-    <div class="steg">
-      <div class="steg-head"><span class="num">2</span><h3>Gjør én forbedring</h3></div>
-      <div class="minis" id="forbedre"></div>
-    </div>
-    <div class="steg">
-      <div class="steg-head"><span class="num">3</span><h3>Bytt plass med sidemannen</h3></div>
-      <p>Prøv den andres løsning uten at de forklarer noe. Si deretter tre ting:</p>
-      <div class="trio">
-        <div><b>Liker</b><span>Hva fungerte?</span></div>
-        <div><b>Lurer på</b><span>Hva var uklart?</span></div>
-        <div><b>Ønsker</b><span>Hva mangler?</span></div>
-      </div>
-      <p>Bytt tilbake, og gi Gemini tilbakemeldingen du fikk:</p>
-      <div class="copycard" id="c-fb"></div>
-    </div>
-  </section>
-
-  <!-- VERDI -->
-  <section class="fase" id="f-verdi" data-fase="verdi" hidden>
-    <div class="hero">
-      <span class="stamp">Verdi · 10 min</span>
-      <h2>Hva ville dette <mark>gjort for oss?</mark></h2>
-      <p class="lead">Gemini stiller deg tre spørsmål og lager et idékort. Et grovt anslag er helt greit.</p>
-    </div>
-    <div class="copycard" id="c-verdi"></div>
     <div class="postit">
-      <b>Del idékortet ditt</b>
-      <span>Kopier idékortet fra Gemini og legg det der arrangøren viser deg. Kortene blir en felles idéliste for kommunalområdet.</span>
+      <b>Før du starter</b>
+      <span>Gå til <b>gemini.google.com</b> og start en ny chat. Bruk den samme chatten resten av økten.</span>
     </div>
-    <div class="steg">
-      <p class="big">KI gir deg et godt utkast. Du er fagpersonen som gjør det riktig.</p>
-      <p class="hand">Snakk med sidemannen: Hva overrasket deg? Hva vil du prøve igjen neste uke?</p>
+    <div data-loop></div>
+    <div class="copycard" id="c1"></div>
+    <details class="hjelp">
+      <summary>Kan jeg legge ved egne dokumenter?</summary>
+      <p style="margin-bottom:12px">Ja, når Gemini spør om det. Bruk vedleggsknappen i Gemini.</p>
+      <div class="rules">
+        <div class="ja"><b>Greit</b><ul><li>Maler og standardbrev</li><li>Rutiner og veiledere</li><li>Tekster fra kommunens nettside</li></ul></div>
+        <div class="nei"><b>Ikke greit</b><ul><li>Brev til en bestemt person</li><li>Saker med navn eller fødselsnummer</li><li>Helse- og personalsaker</li></ul></div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 3 BYGG -->
+  <section class="fase" id="s3" data-fase="lage" hidden>
+    <div class="hero">
+      <span class="stamp" data-stamp></span>
+      <h2>Bygg en <mark>første versjon</mark></h2>
+      <p class="lead">Velg det Gemini anbefalte. Gemini bygger noe som faktisk virker, og som du kan prøve med en gang. Det er en prototype: noe å vise frem og teste, ikke noe som skal i drift.</p>
     </div>
+    <div class="choices" id="former"></div>
+    <div data-loop></div>
+    <div class="copycard" id="c2"></div>
+  </section>
+
+  <!-- 4 SIMULER -->
+  <section class="fase" id="s4" data-fase="prove" hidden>
+    <div class="hero">
+      <span class="stamp" data-stamp></span>
+      <h2>La Gemini <mark>teste som en bruker</mark></h2>
+      <p class="lead">Gemini spiller en realistisk bruker som prøver løsningen din, og forteller hvor det skurrer. Så velger du hva som skal rettes.</p>
+    </div>
+    <div data-loop></div>
+    <div class="copycard" id="c3"></div>
+  </section>
+
+  <!-- 5 SIDEMANN -->
+  <section class="fase" id="s5" data-fase="prove" hidden>
+    <div class="hero">
+      <span class="stamp" data-stamp></span>
+      <h2>Test på <mark>sidemannen</mark></h2>
+      <p class="lead">Nå er det et ekte menneske sin tur. Bytt plass og prøv hverandres løsning uten å forklare noe.</p>
+    </div>
+    <p>Skriv ned det sidemannen sier om løsningen din:</p>
+    <div class="trio">
+      <label for="fb-liker"><b>Liker</b><span>Hva fungerte?</span><textarea class="fb" id="fb-liker" rows="3"></textarea></label>
+      <label for="fb-lurer"><b>Lurer på</b><span>Hva var uklart?</span><textarea class="fb" id="fb-lurer" rows="3"></textarea></label>
+      <label for="fb-onsker"><b>Ønsker</b><span>Hva mangler?</span><textarea class="fb" id="fb-onsker" rows="3"></textarea></label>
+    </div>
+    <p>Tilbakemeldingen settes inn i teksten under. Kopier og lim inn i Gemini.</p>
+    <div data-loop></div>
+    <div class="copycard" id="c4"></div>
+  </section>
+
+  <!-- 6 GEVINST -->
+  <section class="fase" id="s6" data-fase="prove" hidden>
+    <div class="hero">
+      <span class="stamp" data-stamp></span>
+      <h2>Var det <mark>verdt det?</mark></h2>
+      <p class="lead">Gemini sammenligner med gevinstvurderingen fra starten, spør hva du lærte, og skriver idékortet ditt.</p>
+    </div>
+    <div data-loop></div>
+    <div class="copycard" id="c5"></div>
+  </section>
+
+  <!-- 7 KORT -->
+  <section class="fase" id="s7" data-fase="prove" hidden>
+    <div class="hero">
+      <span class="stamp" data-stamp></span>
+      <h2>Idékortet <mark>ditt</mark></h2>
+      <p class="lead">Lim inn idékortet fra Gemini, fra IDÉ til NESTE STEG.</p>
+    </div>
+    <textarea class="field" id="kort-inn" rows="4" placeholder="IDÉ: …&#10;PROBLEM: …" aria-label="Lim inn idékortet"></textarea>
+    <p class="feil" id="kort-feil" hidden>Fant ikke idékortet i teksten. Sjekk at du kopierte hele kortet fra Gemini, fra IDÉ til NESTE STEG.</p>
+    <article class="kort" id="kort"></article>
+    <div class="kort-knapper">
+      <button class="btn" id="kort-kopier" type="button" data-label="Kopier som tekst">Kopier som tekst</button>
+      <button class="btn plain" id="kort-pdf" type="button" hidden>Lagre som PDF</button>
+    </div>
+    <p class="muted">Del kortet der arrangøren viser deg, for eksempel som skjermbilde eller tekst.</p>
+    <p class="big">KI gir deg et godt utkast. Du er fagpersonen som gjør det riktig.</p>
   </section>
 
   <footer class="nav">
@@ -278,239 +364,372 @@ footer.nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap
 </div>
 
 <script>
-const FASER = [
-  { id: "laere", navn: "Lære", hint: "Finn noe", c: "var(--yellow)" },
-  { id: "lage", navn: "Lage", hint: "Bygg det", c: "var(--pink)" },
-  { id: "prove", navn: "Prøve", hint: "Test det", c: "var(--mint)" },
-  { id: "verdi", navn: "Verdi", hint: "Hva gir det?", c: "var(--lilac)" }
+const STEG = [
+  { fase: "Lære", navn: "Beskriv problemet" },
+  { fase: "Lære", navn: "Intervju med Gemini", gemini: true },
+  { fase: "Lage", navn: "Bygg prototypen", gemini: true },
+  { fase: "Prøve", navn: "Simulert bruker", gemini: true },
+  { fase: "Prøve", navn: "Test på sidemannen", gemini: true },
+  { fase: "Prøve", navn: "Ny gevinstvurdering", gemini: true },
+  { fase: "Prøve", navn: "Idékortet" }
 ];
-const ROLLER = ["HR og personal", "Lønn", "Økonomi", "IKT", "Arkiv", "Kommunikasjon", "Politisk sekretariat", "Leder"];
-const SPOR = [
-  { id: "ferdig", ic: "🎯", navn: "Gi meg et ferdig oppdrag", info: "Alt ligger klart, også eksempeltekst. Fint hvis du er ny med KI.", badge: "anbefalt!" },
-  { id: "eget", ic: "🧭", navn: "Hjelp meg å finne mitt eget", info: "Gemini intervjuer deg om jobben din og foreslår noe du kan lage." }
-];
-const FORMER = [
-  { id: "chatbot", ic: "💬", navn: "Chatbot", info: "Svarer på spørsmål ut fra en tekst, for eksempel en rutine.",
-    tekst: `Lag det nå, som en chatbot her i samtalen:
-- Svar bare ut fra grunnlaget. Står ikke svaret der, si det, og si hvem man kan spørre.
+const FASEFARGE = { "Lære": "var(--yellow)", "Lage": "var(--pink)", "Prøve": "var(--mint)" };
+const TILBAKE = "➜ Gå tilbake til nettsiden og trykk «Neste».";
+const ROLLER = {
+  "HR": "Vi svarer på de samme spørsmålene om permisjon og ferie om og om igjen.",
+  "Kommunikasjon": "Fagavdelingene sender oss tekster som er tunge å lese for innbyggerne.",
+  "Digitalisering": "Det tar lang tid å forklare nye digitale verktøy til ansatte som ikke er vant til dem.",
+  "IT": "Brukerstøtte får mange like henvendelser om passord, skrivere og tilganger.",
+  "Dokumentsenteret": "Ansatte er usikre på hva som skal arkiveres, og hvordan."
+};
+const STIL = "Stil: lys bakgrunn, mørk tekst, én tydelig aksentfarge, store avrundede knapper, god kontrast, fungerer på mobil.";
+const TYPER = [
+  { id: "prototype", ic: "🧩", navn: "Klikkbar app", info: "En liten app, veileder eller et skjema du kan klikke i.", canvas: true,
+    tekst: `HVA DU BYGGER: En klikkbar app
+- En liten app, veileder eller et skjema som løser ideen fra steg 2.
+- Forside med tittel, én setning om hvem den er for, og en tydelig startknapp.
+- Alt skal virke: knapper går videre, skjemaer kan fylles ut, valg gir svar. Ingen tomme knapper og ingen «kommer senere».
+- Bare det viktigste. Ingen innlogging, ingen lagring, ingen ekte persondata.
+- ${STIL}` },
+  { id: "chatbot", ic: "💬", navn: "Chatbot", info: "Et chatvindu som svarer ut fra en rutine eller tekst.", canvas: true,
+    tekst: `HVA DU BYGGER: En chatbot-app med eget chatvindu
+- Et ekte chatgrensesnitt: navn og velkomstmelding øverst, meldingsbobler, et tekstfelt og en Send-knapp.
+- Tre eksempelspørsmål som klikkbare knapper under velkomstmeldingen.
+- Legg grunnlaget (rutinen eller teksten) inn i koden. Når jeg skriver et spørsmål, finner appen det beste svaret i grunnlaget med enkel ordmatching, og viser «Kilde:» under svaret.
+- Finner den ikke noe svar, skal den si det og fortelle hvem man kan spørre.
 - Korte svar i klarspråk.
-- Start med en hilsen og tre eksempler på spørsmål man kan stille.
-- Når jeg skriver STOPP, går du ut av rollen.
-Mangler du grunnlag, lag eksempelinnhold og merk det tydelig som eksempel.` },
-  { id: "veileder", ic: "🪜", navn: "Trinnvis veileder", info: "Ett steg om gangen, med detaljer skjult til man trenger dem.",
-    tekst: `Lag det nå, som en trinnvis veileder (i Canvas hvis det er slått på):
-- Ett steg om gangen, med knappene Neste og Tilbake.
-- Korte tekster. Ekstra detaljer skjules bak «Vis mer».
-- Siste steg: hvem man kontakter hvis noe er uklart.
-- Store knapper, god kontrast, fungerer på mobil.
-Mangler du innhold, lag eksempelinnhold og merk det tydelig som eksempel.` },
-  { id: "klarsprak", ic: "✍️", navn: "Klarspråk", info: "Skriver om en tekst så den blir forstått første gang.",
-    tekst: `Lag det nå: skriv teksten om til klarspråk.
-- Korte setninger, «du» til mottakeren, det viktigste først.
-- Ingen fagord eller paragrafer uten forklaring.
-- Vis den nye teksten først, og list så opp hva du endret.
-- Si fra hvis betydningen kan ha endret seg, så jeg kan sjekke det.` }
+- ${STIL}` },
+  { id: "klarsprak", ic: "✉️", navn: "Klarspråk", info: "Et stivt brev eller en tung tekst gjort forståelig.", canvas: true,
+    tekst: `HVA DU BYGGER: En side med den ferdige teksten i klarspråk
+- Vis den nye teksten ferdig formatert, klar til bruk. Ikke råd om hvordan den kan skrives.
+- Er det et brev, sett det opp som et brev:
+  LARVIK KOMMUNE · [Avdeling] · [dato]
+  Til: [mottaker]
+  Overskrift som sier hva det gjelder og hva svaret er
+  Det viktigste først, korte avsnitt, «du» til mottakeren
+  Hva må du gjøre nå? (bare hvis mottakeren må gjøre noe)
+  Har du spørsmål? (hvem man kontakter)
+  Med vennlig hilsen, [navn], [rolle]
+- En bryter øverst: «Før» og «Etter», så jeg kan bytte mellom originalen og den nye teksten.
+- Under teksten: en liste med de fem viktigste endringene og hvorfor.
+- Stil: ser ut som et ryddig brev på hvit bakgrunn, god kontrast, fungerer på mobil.` }
 ];
 const FERDIGE = [
-  { id: "reise", ic: "🧾", form: "chatbot", navn: "Spør reiseregningsrutinen", info: "En chatbot som svarer ansatte om reiseregning.",
-    oppdrag: "en chatbot som svarer ansatte på spørsmål om reiseregning",
+  { id: "it", ic: "🖥️", type: "chatbot", navn: "Spør IT-brukerstøtte", info: "Mange like spørsmål om passord, skrivere og tilganger.",
+    problem: "IT-brukerstøtte får mange like spørsmål om passord, skrivere og tilganger, som allerede står i rutinene.",
+    bedre: "Ansatte får raskere svar, og brukerstøtte får mer tid til vanskelige saker.",
     grunnlag: `GRUNNLAG (fiktiv rutine):
-Reiseregning leveres i reise- og utgiftssystemet senest 30 dager etter reisen. Kjøregodtgjørelse gis bare når bruk av egen bil er avtalt med leder på forhånd. Kvitteringer for overnatting, parkering og billetter lastes opp som bilde eller PDF. Diett dekkes etter statens satser når reisen varer over 6 timer og er over 15 km fra arbeidsstedet. Leder attesterer, og utbetaling skjer med neste lønnskjøring. Spørsmål sendes til lønnsavdelingen.` },
-  { id: "onboarding", ic: "👋", form: "veileder", navn: "Første uke som nyansatt", info: "En veileder som tar nyansatte gjennom første uka.",
-    oppdrag: "en trinnvis veileder som hjelper nyansatte gjennom den første uka",
+Glemt passord: Bruk «Glemt passord» på innloggingssiden og bekreft med telefonen din. Virker ikke det, ring brukerstøtte.
+Ny PC eller utstyr: Leder bestiller i selvbetjeningsportalen. Leveringstid er normalt fem virkedager.
+Skriver: Velg «Følg meg»-skriveren og hent utskriften med adgangskortet på hvilken som helst skriver.
+Tilgang til fagsystem: Leder bestiller i selvbetjeningsportalen. Det kan ta opptil tre virkedager.
+Mistenkelig e-post: Ikke klikk på lenker. Trykk «Rapporter» i e-postprogrammet.
+Brukerstøtte er åpen hverdager kl. 08–15.30.` },
+  { id: "brev", ic: "✉️", type: "klarsprak", navn: "Et stivt svarbrev", info: "Brev om permisjon som mottakerne ikke forstår.",
+    problem: "Svarbrevene våre om permisjon er så stive at folk ringer for å spørre hva de betyr.",
+    bedre: "Mottakerne forstår brevet første gang, og vi får færre oppfølgingsspørsmål.",
+    grunnlag: `GRUNNLAG (fiktivt brev):
+Vedrørende Deres søknad om permisjon. Det vises til Deres søknad om permisjon uten lønn datert 12.08. Søknaden er behandlet i henhold til gjeldende permisjonsreglement, jf. punkt 4.2. Det meddeles herved at søknaden innvilges for perioden 01.11–31.01 under forutsetning av at tjenestemessige hensyn ikke tilsier annet. Det gjøres oppmerksom på at permisjonen medfører opphør av opptjening av feriepenger samt at pensjonsforhold kan bli berørt. Eventuelle spørsmål vedrørende dette rettes til HR-avdelingen.` },
+  { id: "onboarding", ic: "👋", type: "prototype", navn: "Første uke som nyansatt", info: "Nyansatte vet ikke hva de skal gjøre først.",
+    problem: "Nyansatte får mye informasjon på en gang den første uka og vet ikke hva de skal gjøre først.",
+    bedre: "Nyansatte kommer tryggere i gang, og leder slipper å forklare det samme hver gang.",
     grunnlag: `GRUNNLAG (fiktiv rutine):
-Dag 1: Hent adgangskort i resepsjonen. Leder viser deg kontorplass. Logg inn på PC-en med brukernavn fra velkomst-e-posten og bytt passord.
+Dag 1: Hent adgangskort i resepsjonen. Logg inn på PC-en med brukernavn fra velkomst-e-posten og bytt passord.
 Dag 1–2: Ta e-læringskursene i personvern og informasjonssikkerhet (ca. 1,5 time).
 Dag 2: Registrer kontonummer og skattekort i HR-portalen.
 Dag 3: Møt fadderen din, som viser deg timeføring og fraværsrutiner.
-Innen uka er omme: Les verdiplattformen og de etiske retningslinjene. Avtal oppstartssamtale med leder.
-Spørsmål om lønn: lønnsavdelingen. Spørsmål om PC og tilganger: IKT-brukerstøtte.` },
-  { id: "brev", ic: "📨", form: "klarsprak", navn: "Gjør et svarbrev forståelig", info: "Skriv om et stivt brev om permisjon til klarspråk.",
-    oppdrag: "en klarspråkversjon av et svarbrev om permisjon",
-    grunnlag: `GRUNNLAG (fiktivt brev):
-Vedrørende Deres søknad om permisjon. Det vises til Deres søknad om permisjon uten lønn datert 12.08. Søknaden er behandlet i henhold til gjeldende permisjonsreglement, jf. punkt 4.2. Det meddeles herved at søknaden innvilges for perioden 01.11–31.01 under forutsetning av at tjenestemessige hensyn ikke tilsier annet. Det gjøres oppmerksom på at permisjonen medfører opphør av opptjening av feriepenger samt at pensjonsforhold kan bli berørt. Eventuelle spørsmål vedrørende dette rettes til HR-avdelingen.` },
-  { id: "verdi", ic: "🧡", form: "veileder", navn: "Verdiplattformen for nyansatte", info: "Gjør den nye verdiplattformen lett å forstå for en ny kollega.",
-    oppdrag: "en trinnvis veileder som forklarer den nye verdiplattformen for en nyansatt i teamet mitt",
-    grunnlag: `GRUNNLAG:
-Jeg limer inn teksten fra verdiplattformen etter spørsmålene dine. Har jeg den ikke, lag et opplegg med tre tenkte verdier og merk tydelig at de er eksempler.` }
+Innen uka er omme: Les verdiplattformen og de etiske retningslinjene. Avtal oppstartssamtale med leder.` }
 ];
-const SJEKK = [
-  "Stemmer innholdet? Se etter ting som er feil eller funnet på.",
-  "Ville en kollega forstått det uten at du forklarte?",
-  "Mangler det noe viktig?"
+const FELT = [
+  ["ide", "IDÉ"], ["problem", "PROBLEM"], ["losning", "LØSNING"], ["hvem", "HVEM HAR NYTTE"],
+  ["bedre", "HVA BLIR BEDRE"], ["ofte", "HVOR OFTE"], ["tid", "TID I DAG"], ["anslag", "GROVT ANSLAG"],
+  ["endret", "ENDRET ETTER TESTING"], ["laerdom", "DETTE LÆRTE JEG"], ["neste", "NESTE STEG"]
 ];
-const FORBEDRE = [
-  { navn: "Finn feil", info: "Gemini går kritisk gjennom sitt eget arbeid.", tekst: "Se kritisk på det du har laget. Finn de tre største svakhetene, rett dem, og si hva du endret." },
-  { navn: "Gjør det enklere", info: "Kortere og lettere å forstå.", tekst: "Gjør det enklere og kortere. Fjern alt som ikke er helt nødvendig." }
-];
+const EKSEMPEL = {
+  ide: "Spør IT – chatbot for vanlige spørsmål",
+  problem: "Brukerstøtte får mange like spørsmål som allerede står i rutinene.",
+  losning: "En chatbot som svarer ut fra rutinene og viser hvor svaret står.",
+  hvem: "Ansatte som trenger raskt svar, og brukerstøtte.",
+  bedre: "Raskere svar, mer tid til vanskelige saker, likere svar.",
+  ofte: "Ca. 40 ganger i uka", tid: "5–10 min hver gang", anslag: "Ca. 15 timer/mnd (40 × 4 × 6 min)",
+  endret: "Den simulerte brukeren spurte om ting som ikke stod i rutinen. Anslaget er nok litt høyt.",
+  laerdom: "Første utkast kom på sekunder, men den fant på en åpningstid. Jeg må sjekke alt.",
+  neste: "Teste med fem kolleger i to uker."
+};
 
-const state = { fase: 0, rolle: "", spor: "", ferdig: "", form: "" };
-try { Object.assign(state, JSON.parse(localStorage.getItem("ki-verksted-v2") || "{}")); } catch (e) {}
-const lagre = () => { try { localStorage.setItem("ki-verksted-v2", JSON.stringify(state)); } catch (e) {} };
+const state = { steg: 0, rolle: "", problem: "", bedre: "", ferdig: "", type: "", kort: "", liker: "", lurer: "", onsker: "" };
+try { Object.assign(state, JSON.parse(localStorage.getItem("ki-verksted-v5") || "{}")); } catch (e) {}
+const lagre = () => { try { localStorage.setItem("ki-verksted-v5", JSON.stringify(state)); } catch (e) {} };
 const $ = (s) => document.querySelector(s);
-const rolle = () => state.rolle || "[din rolle]";
-const ferdig = () => FERDIGE.find(f => f.id === state.ferdig);
+const ferdig = () => FERDIGE.find(f => f.id === state.ferdig && f.problem === state.problem);
 
-function promptLaere() {
-  if (state.spor === "ferdig") {
-    const f = ferdig();
-    if (!f) return "";
-    return `⛔ Ikke lag noe ennå. Les dette, og still meg 2 korte spørsmål om hvem som skal bruke det. Vent på svar.
+/* prompter */
+function p1() {
+  const f = ferdig();
+  return `▶ STEG 2: LÆRE – intervju
 
-Jeg jobber med ${rolle()} i Larvik kommune. Jeg vil lage ${f.oppdrag}.
+SPILLEREGLER FOR HELE SAMTALEN:
+- Vi jobber i steg. Du går ALDRI videre til neste steg på egen hånd. Et nytt steg starter bare når jeg limer inn en melding som begynner med ▶ STEG.
+- Når et steg er ferdig, avslutter du med denne linjen og ingenting etter den:
+  ${TILBAKE}
 
-${f.grunnlag}`;
-  }
-  return `⛔ Ikke foreslå noe ennå. Still meg ett spørsmål om gangen, maks tre, om arbeidsdagen min og hva som tar tid. Vent på svar mellom hvert spørsmål.
+OM MEG: Jeg jobber med ${state.rolle || "[rolle]"} i Larvik kommune.
+PROBLEMET SOM SKAL FIKSES: «${state.problem.trim() || "[ikke fylt ut]"}»
+DETTE SKAL BLI BEDRE: «${state.bedre.trim() || "[ikke fylt ut]"}»
 
-Jeg jobber med ${rolle()} i Larvik kommune.
+DIN OPPGAVE NÅ: Intervju meg, slik at vi lander én liten idé. Ikke lag noe ennå.
+- Still maks fem spørsmål, ett om gangen, merket «Spørsmål 1 av 5» osv. STOPP og vent på svar etter hvert spørsmål.
+- Spør om: hvem som merker problemet, hvordan det løses i dag, hvor ofte det skjer, omtrent hvor lang tid det tar hver gang, og om jeg har en rutine, mal eller tekst jeg kan legge ved (uten personopplysninger).
+- Hvis jeg er usikker, gi meg to–tre eksempler å velge mellom.
 
-Etterpå: Foreslå tre små ting jeg kan lage med KI på 20 minutter, enten en chatbot, en trinnvis veileder eller en tekst i klarspråk. Hjelp meg å velge én. Hvis jeg er usikker, gi meg eksempler.
+RAMMER FOR IDEEN:
+- Må kunne lages på 15 minutter, uten tilgang til fagsystemer og uten ekte personopplysninger.
+- Må være én av disse tre: Klikkbar app, Chatbot eller Klarspråk.
 
-Bruk hverdagsspråk og korte svar. Minn meg på å ikke dele personopplysninger.`;
+NÅR INTERVJUET ER FERDIG, oppsummer kort:
+- IDEEN: én setning
+- ANBEFALT TYPE: Klikkbar app, Chatbot eller Klarspråk
+- GEVINST I DAG: hvor ofte × hvor lang tid = grovt anslag i timer per måned, og hva som blir bedre utover tid
+Spør om jeg er enig. Når jeg er enig, skriv: «Velg [ANBEFALT TYPE] på nettsiden.» og avslutt med tilbake-linjen.
+${f ? "\n" + f.grunnlag + "\n" : ""}
+Start nå med Spørsmål 1 av 5, og ingenting annet.`;
 }
-function promptLage() {
-  const form = FORMER.find(f => f.id === state.form);
-  return form ? form.tekst : "";
+function p2() {
+  const t = TYPER.find(x => x.id === state.type);
+  if (!t) return "";
+  return `▶ STEG 3: LAGE
+
+Nå skal du BYGGE en første versjon av ideen fra steg 2, som en interaktiv app i Canvas.
+
+SLIK SKAL DU BYGGE – UANSETT TYPE:
+- Åpne Canvas selv og bygg appen der: komplett, kjørbar kode (HTML, CSS og JavaScript i én fil), slik at jeg kan klikke og bruke den i forhåndsvisningen med en gang.
+- IKKE beskriv appen, ikke lag en plan eller skisse, og ikke spill rollen i chatten. Bygg den.
+- Svaret ditt skal være Canvas-appen. Ikke be meg slå på noe, og ikke lever koden bare som tekst i chatten.
+
+FØR DU BYGGER:
+- Blir løsningen bedre med en rutine, mal eller tekst jeg har, og har jeg ikke lagt ved noe ennå: spør om jeg vil laste opp en fil eller lime inn tekst (uten personopplysninger). STOPP og vent på svar.
+- Sier jeg nei, lag realistisk eksempelinnhold og merk det tydelig som eksempel i appen.
+- Ellers: begynn å bygge med en gang, uten flere spørsmål.
+
+${t.tekst}
+
+Når appen er ferdig i Canvas: skriv én setning om hva du har laget og hvordan jeg prøver det. Ikke foreslå forbedringer. Avslutt med tilbake-linjen.`;
 }
-const PROMPT_FB = `En kollega har testet det vi laget.
-Liker: …
-Lurer på: …
-Ønsker: …
-Foreslå to forbedringer, og gjør den viktigste.`;
-function promptVerdi() {
-  return `⛔ Still meg tre spørsmål, ett om gangen, og vent på svar mellom hvert:
-1. Hvem har nytte av det vi laget?
-2. Hvor ofte skjer det, og hvor lang tid tar det i dag?
-3. Hva blir bedre som ikke handler om tid?
+const P3 = `▶ STEG 4: PRØVE – simulert bruker
 
-Hjelp meg å anslå hvis jeg er usikker. Ikke overdriv.
+Spill en realistisk bruker fra målgruppen vi snakket om i steg 2. Gi personen et navn, en situasjon og litt tidspress.
+- La personen bruke løsningen vår i tre korte scener. Beskriv hva personen skriver, klikker på og leser i appen, og hvor hen stopper opp eller misforstår.
+- Vær ærlig. Ikke vær snill.
+- List så opp de tre viktigste funnene, rangert.
+- Spør hvilket funn jeg vil rette, og VENT på svar.
+- Rett det jeg velger ved å oppdatere appen i Canvas.
+Avslutt med tilbake-linjen.`;
+const p4 = () => `▶ STEG 5: PRØVE – tilbakemelding fra en kollega
+Liker: ${state.liker.trim() || "–"}
+Lurer på: ${state.lurer.trim() || "–"}
+Ønsker: ${state.onsker.trim() || "–"}
 
-Lag så et kort idékort:
+Rett det viktigste ut fra tilbakemeldingen ved å oppdatere appen i Canvas. Si kort hva du endret.
+Avslutt med tilbake-linjen.`;
+const P5 = `▶ STEG 6: PRØVE – ny gevinstvurdering
+
+Gå ut av eventuelle roller. Sammenlign med gevinstvurderingen fra steg 2.
+Still meg to spørsmål, ett om gangen, og vent på svar etter hvert:
+1. Etter testingen: tror du fortsatt på anslaget? Hva har endret seg?
+2. Hva lærte du om å bruke KI i dag?
+
+Skriv så idékortet i en kodeblokk. Bruk nøyaktig disse overskriftene med kolon, én linje per felt og maks to setninger per felt:
 IDÉ:
+PROBLEM:
+LØSNING:
 HVEM HAR NYTTE:
 HVA BLIR BEDRE:
-GROVT ANSLAG: (timer per måned, vis regnestykket)
+HVOR OFTE:
+TID I DAG:
+GROVT ANSLAG: (timer per måned, vis regnestykket kort)
+ENDRET ETTER TESTING:
+DETTE LÆRTE JEG:
 NESTE STEG:
-Laget av: ${rolle()}, Larvik kommune`;
-}
 
+Under kodeblokken skriver du bare: «➜ Kopier idékortet, gå tilbake til nettsiden og lim det inn.»
+Start nå med spørsmål 1.`;
+
+/* hjelpere */
+function el(tag, cls, tekst) { const e = document.createElement(tag); if (cls) e.className = cls; if (tekst != null) e.textContent = tekst; return e; }
 function kopier(tekst, btn, sel) {
   const label = btn.dataset.label;
   const ok = () => { btn.textContent = "Kopiert! Lim inn i Gemini"; btn.classList.add("done"); setTimeout(() => { btn.textContent = label; btn.classList.remove("done"); }, 2400); };
+  const gammelMetode = () => {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = tekst; ta.setAttribute("readonly", "");
+      ta.style.position = "fixed"; ta.style.top = "0"; ta.style.left = "0"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, tekst.length);
+      const lyktes = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return lyktes;
+    } catch (e) { return false; }
+  };
   const fallback = () => {
+    if (gammelMetode()) { ok(); return; }
     if (sel) { const r = document.createRange(); r.selectNodeContents(sel); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
-    btn.textContent = "Teksten er markert. Kopier med Ctrl+C";
+    btn.textContent = "Marker teksten og kopier med Ctrl+C";
   };
   try { navigator.clipboard.writeText(tekst).then(ok, fallback); } catch (e) { fallback(); }
 }
-
-function copycard(el, tittel, tekst, label) {
-  el.innerHTML = "";
-  el.classList.remove("open");
-  const what = document.createElement("div"); what.className = "what";
-  const h = document.createElement("h3"); h.textContent = tittel;
-  const btn = document.createElement("button"); btn.type = "button"; btn.className = "btn"; btn.dataset.label = label || "Kopier"; btn.textContent = btn.dataset.label;
-  const pre = document.createElement("div"); pre.className = "preview"; pre.textContent = tekst;
-  const tog = document.createElement("button"); tog.type = "button"; tog.className = "link"; tog.textContent = "Se hele teksten";
-  tog.addEventListener("click", () => { el.classList.toggle("open"); tog.textContent = el.classList.contains("open") ? "Vis mindre" : "Se hele teksten"; });
+function copycard(box, tittel, tekst) {
+  box.innerHTML = ""; box.classList.remove("open");
+  const what = el("div", "what");
+  const btn = el("button", "btn", "Kopier"); btn.type = "button"; btn.dataset.label = "Kopier";
+  const pre = el("div", "preview", tekst);
+  const tog = el("button", "link", "Se hele teksten"); tog.type = "button";
+  tog.addEventListener("click", () => { box.classList.toggle("open"); tog.textContent = box.classList.contains("open") ? "Vis mindre" : "Se hele teksten"; });
   btn.addEventListener("click", () => kopier(tekst, btn, pre));
-  what.append(h, btn);
-  el.append(what, pre, tog);
+  what.append(el("h3", null, tittel), btn);
+  box.append(what, pre, tog);
 }
-
-function choices(el, items, aktiv, pick) {
-  el.innerHTML = "";
+function choices(box, items, aktiv, pick) {
+  box.innerHTML = "";
   items.forEach(it => {
-    const b = document.createElement("button"); b.type = "button"; b.className = "choice";
+    const b = el("button", "choice"); b.type = "button";
     b.setAttribute("aria-pressed", String(aktiv(it)));
-    if (it.badge) { const s = document.createElement("span"); s.className = "badge"; s.textContent = it.badge; b.append(s); }
-    const ic = document.createElement("span"); ic.className = "ic"; ic.textContent = it.ic; ic.setAttribute("aria-hidden", "true");
-    const t = document.createElement("b"); t.textContent = it.navn;
-    const s = document.createElement("small"); s.textContent = it.info;
-    b.append(ic, t, s);
+    const ic = el("span", "ic", it.ic); ic.setAttribute("aria-hidden", "true");
+    b.append(ic, el("b", null, it.navn), el("small", null, it.info));
     b.addEventListener("click", () => pick(it));
-    el.append(b);
+    box.append(b);
   });
 }
-
-function render() {
-  const tabs = $("#tabs"); tabs.innerHTML = "";
-  FASER.forEach((f, i) => {
-    const b = document.createElement("button"); b.type = "button"; b.style.setProperty("--c", f.c);
-    b.innerHTML = `<span></span><small></small>`;
-    b.querySelector("span").textContent = `${i + 1}. ${f.navn}`; b.querySelector("small").textContent = f.hint;
-    if (i === state.fase) b.setAttribute("aria-current", "step");
-    if (i < state.fase) b.dataset.done = "1";
-    b.addEventListener("click", () => gaTil(i));
-    tabs.append(b);
+function loop(nr) {
+  const d = el("div", "loop");
+  [["1", "Kopier teksten"], ["2", "Lim inn i Gemini og svar"], ["3", "Kom tilbake hit når Gemini skriver ➜"]].forEach(([n, t]) => {
+    const x = el("div"); x.append(el("b", null, n), el("span", null, t)); d.append(x);
   });
-  FASER.forEach((f, i) => { $("#f-" + f.id).hidden = i !== state.fase; });
+  const wrap = el("div", "steg");
+  wrap.append(d, el("p", "tilbake", `Hopper Gemini videre for tidlig? Skriv: «Vent, vi er på steg ${nr}.»`));
+  return wrap;
+}
 
-  // Lære
+/* idékort */
+const norm = (s) => s.toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, " ").trim();
+const FELTMAP = Object.fromEntries(FELT.map(([k, l]) => [norm(l), k]));
+function lesKort(tekst) {
+  const ut = {}; let sist = null;
+  tekst.split(/\r?\n/).forEach(raw => {
+    const linje = raw.replace(/\*\*/g, "").trim();
+    if (!linje || linje.startsWith("```")) return;
+    const m = linje.match(/^[#>\-•\s]*([^:]{2,30}?)\s*:\s*(.*)$/);
+    const key = m ? FELTMAP[norm(m[1])] : null;
+    if (key) { ut[key] = m[2].trim(); sist = key; }
+    else if (sist) { ut[sist] = (ut[sist] ? ut[sist] + " " : "") + linje.replace(/^[-•]\s*/, ""); }
+  });
+  return Object.keys(ut).length >= 3 ? ut : null;
+}
+function felt(lbl, verdi, tag) { const d = el("div"); d.append(el("span", "lbl", lbl), el(tag || "p", null, verdi || "–")); return d; }
+function tegnKort() {
+  const lest = state.kort.trim() ? lesKort(state.kort) : null;
+  $("#kort-feil").hidden = !(state.kort.trim() && !lest);
+  const d = lest || EKSEMPEL, erEks = !lest;
+  const k = $("#kort"); k.innerHTML = "";
+  const band = el("div", "band");
+  band.append(el("span", null, erEks ? "Eksempel på idékort" : "Idékort · KI-verkstedet"), el("span", null, erEks ? "IT" : (state.rolle || "Larvik kommune")));
+  const body = el("div", "body");
+  body.append(el("h3", "tittel", d.ide || "Uten navn"));
+  const par = el("div", "par");
+  const pil = el("span", "pil", "→"); pil.setAttribute("aria-hidden", "true");
+  const los = felt("Løsningen", d.losning); los.className = "los";
+  par.append(felt("Problemet", d.problem), pil, los); body.append(par);
+  const tall = el("div", "tall");
+  const h = felt("Grovt anslag", d.anslag, "b"); h.className = "hoved";
+  tall.append(felt("Hvor ofte", d.ofte, "b"), felt("Tid i dag", d.tid, "b"), h); body.append(tall);
+  const sek = el("div", "seksjoner");
+  sek.append(felt("Hvem har nytte", d.hvem), felt("Hva blir bedre", d.bedre), felt("Endret etter testing", d.endret), felt("Neste steg", d.neste));
+  body.append(sek);
+  if (d.laerdom) { const l = el("div", "laerte"); l.append(el("span", "lbl", "Dette lærte jeg"), el("p", null, d.laerdom)); body.append(l); }
+  const fot = el("div", "fot");
+  fot.append(el("span", null, "Larvik kommune · Organisasjon"), el("span", null, new Date().toLocaleDateString("nb-NO", { day: "numeric", month: "long", year: "numeric" })));
+  body.append(fot);
+  k.append(band, body);
+  $("#kort-kopier").disabled = erEks;
+}
+function kortSomTekst() {
+  const d = lesKort(state.kort); if (!d) return "";
+  return FELT.map(([k, l]) => `${l}: ${d[k] || "–"}`).concat(`Laget av: ${state.rolle || "–"}, Larvik kommune`).join("\n");
+}
+
+/* tegning */
+function render() {
+  const nav = $("#progress"); nav.innerHTML = "";
+  ["Lære", "Lage", "Prøve"].forEach(fase => {
+    const g = el("div", "grp" + (STEG[state.steg].fase === fase ? " aktiv" : ""));
+    g.append(el("span", null, fase));
+    const dots = el("div", "dots");
+    STEG.forEach((s, i) => {
+      if (s.fase !== fase) return;
+      const b = el("button"); b.type = "button"; b.style.setProperty("--c", FASEFARGE[fase]);
+      b.setAttribute("aria-label", `Steg ${i + 1}: ${s.navn}`); b.title = s.navn;
+      if (i === state.steg) b.setAttribute("aria-current", "step");
+      if (i < state.steg) b.dataset.done = "1";
+      b.addEventListener("click", () => gaTil(i));
+      dots.append(b);
+    });
+    g.append(dots); nav.append(g);
+  });
+  STEG.forEach((s, i) => {
+    const sec = $("#s" + (i + 1));
+    sec.hidden = i !== state.steg;
+    sec.querySelector("[data-stamp]").textContent = `${s.fase} · steg ${i + 1} av ${STEG.length}`;
+  });
+
   const rc = $("#roller"); rc.innerHTML = "";
-  ROLLER.forEach(r => {
-    const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = r;
+  Object.keys(ROLLER).forEach(r => {
+    const b = el("button", "chip", r); b.type = "button";
     b.setAttribute("aria-pressed", String(r === state.rolle));
     b.addEventListener("click", () => { state.rolle = r; $("#rolle-annet").value = ""; lagre(); render(); });
     rc.append(b);
   });
-  choices($("#spor"), SPOR, s => s.id === state.spor, s => { state.spor = s.id; if (s.id === "eget") { state.ferdig = ""; } lagre(); render(); });
-  $("#ferdige-wrap").hidden = state.spor !== "ferdig";
-  choices($("#ferdige"), FERDIGE, f => f.id === state.ferdig, f => { state.ferdig = f.id; state.form = f.form; lagre(); render(); });
-  const visLaere = state.spor === "eget" || (state.spor === "ferdig" && state.ferdig);
-  $("#laere-copy-wrap").hidden = !visLaere;
-  $("#laere-num").textContent = state.spor === "ferdig" ? "4" : "3";
-  if (visLaere) copycard($("#c-laere"), state.spor === "ferdig" ? "Start oppdraget" : "Finn oppdraget ditt", promptLaere(), "Kopier");
+  $("#problem").placeholder = ROLLER[state.rolle] ? "For eksempel: " + ROLLER[state.rolle] : "Skriv med egne ord …";
+  choices($("#ferdige"), FERDIGE, f => !!ferdig() && f.id === state.ferdig, f => {
+    Object.assign(state, { ferdig: f.id, problem: f.problem, bedre: f.bedre, type: f.type });
+    $("#problem").value = f.problem; $("#bedre").value = f.bedre; lagre(); render();
+  });
 
-  // Lage
-  const f = ferdig();
-  const sum = $("#form-sum");
-  if (state.spor === "ferdig" && f) { sum.hidden = false; sum.innerHTML = ""; sum.append("Oppdraget ditt passer som "); const em = document.createElement("em"); em.textContent = (FORMER.find(x => x.id === f.form) || {}).navn || ""; sum.append(em, ". Du kan bytte hvis du vil."); }
-  else { sum.hidden = false; sum.textContent = "Velg formen Gemini anbefalte, eller den du har mest lyst til å prøve."; }
-  choices($("#former"), FORMER, x => x.id === state.form, x => { state.form = x.id; lagre(); render(); });
-  if (state.form) copycard($("#c-lage"), "Lag prototypen", promptLage(), "Kopier");
-  else { $("#c-lage").innerHTML = "<p>Velg en form over, så dukker teksten opp her.</p>"; }
-  $("#canvas-tips").hidden = state.form !== "veileder";
+  copycard($("#c1"), "Steg 2: Intervju", p1());
+  choices($("#former"), TYPER, x => x.id === state.type, x => { state.type = x.id; lagre(); render(); });
+  const t = TYPER.find(x => x.id === state.type);
+  if (t) copycard($("#c2"), "Steg 3: Bygg", p2());
+  else { $("#c2").innerHTML = ""; $("#c2").append(el("p", null, "Velg typen Gemini anbefalte, så dukker teksten opp her.")); }
+  copycard($("#c3"), "Steg 4: Simulert bruker", P3);
+  copycard($("#c4"), "Steg 5: Tilbakemelding", p4());
+  copycard($("#c5"), "Steg 6: Ny gevinstvurdering", P5);
+  tegnKort();
 
-  // Prøve og verdi
-  copycard($("#c-fb"), "Gi Gemini tilbakemeldingen", PROMPT_FB, "Kopier");
-  copycard($("#c-verdi"), "Lag idékortet", promptVerdi(), "Kopier");
-
-  $("#forrige").disabled = state.fase === 0;
-  $("#neste").textContent = state.fase === FASER.length - 1 ? "Til start" : `Videre til ${FASER[state.fase + 1].navn} →`;
+  $("#forrige").disabled = state.steg === 0;
+  $("#neste").textContent = state.steg === STEG.length - 1 ? "Til start" : `Neste: ${STEG[state.steg + 1].navn} →`;
 }
+function gaTil(i) { state.steg = Math.max(0, Math.min(STEG.length - 1, i)); lagre(); render(); window.scrollTo(0, 0); }
 
-function gaTil(i) { state.fase = Math.max(0, Math.min(FASER.length - 1, i)); lagre(); render(); window.scrollTo(0, 0); }
-
-(function statisk() {
-  const c = $("#checks");
-  SJEKK.forEach((t, i) => {
-    const l = document.createElement("label"); l.setAttribute("for", "sj" + i);
-    const inp = document.createElement("input"); inp.type = "checkbox"; inp.id = "sj" + i;
-    const s = document.createElement("span"); s.textContent = t;
-    l.append(inp, s); c.append(l);
-  });
-  const m = $("#forbedre");
-  FORBEDRE.forEach(p => {
-    const d = document.createElement("div"); d.className = "mini";
-    const b = document.createElement("b"); b.textContent = p.navn;
-    const ptag = document.createElement("p"); ptag.textContent = p.info;
-    const btn = document.createElement("button"); btn.type = "button"; btn.className = "btn small"; btn.dataset.label = "Kopier"; btn.textContent = "Kopier";
-    btn.addEventListener("click", () => kopier(p.tekst, btn, null));
-    d.append(b, ptag, btn); m.append(d);
-  });
-})();
-
+/* oppstart */
+[["s2", 2], ["s3", 3], ["s4", 4], ["s5", 5], ["s6", 6]].forEach(([id, nr]) => $("#" + id + " [data-loop]").replaceWith(loop(nr)));
+(function () { let topp = false; try { topp = window.self === window.top; } catch (e) {} $("#kort-pdf").hidden = !topp; })();
 $("#rolle-annet").addEventListener("input", e => {
   state.rolle = e.target.value.trim(); lagre();
   document.querySelectorAll("#roller .chip").forEach(c => c.setAttribute("aria-pressed", "false"));
-  if (!$("#laere-copy-wrap").hidden) copycard($("#c-laere"), state.spor === "ferdig" ? "Start oppdraget" : "Finn oppdraget ditt", promptLaere(), "Kopier");
-  copycard($("#c-verdi"), "Lag idékortet", promptVerdi(), "Kopier");
 });
-$("#forrige").addEventListener("click", () => gaTil(state.fase - 1));
-$("#neste").addEventListener("click", () => gaTil(state.fase === FASER.length - 1 ? 0 : state.fase + 1));
-if (state.rolle && !ROLLER.includes(state.rolle)) $("#rolle-annet").value = state.rolle;
+$("#problem").addEventListener("input", e => { state.problem = e.target.value; lagre(); });
+$("#bedre").addEventListener("input", e => { state.bedre = e.target.value; lagre(); });
+$("#kort-inn").addEventListener("input", e => { state.kort = e.target.value; lagre(); tegnKort(); });
+$("#kort-kopier").addEventListener("click", e => { const t = kortSomTekst(); if (t) kopier(t, e.currentTarget, null); });
+$("#kort-pdf").addEventListener("click", () => { try { window.print(); } catch (e) {} });
+$("#forrige").addEventListener("click", () => gaTil(state.steg - 1));
+$("#neste").addEventListener("click", () => gaTil(state.steg === STEG.length - 1 ? 0 : state.steg + 1));
+$("#problem").value = state.problem || "";
+$("#bedre").value = state.bedre || "";
+$("#kort-inn").value = state.kort || "";
+["liker", "lurer", "onsker"].forEach(k => {
+  const f = $("#fb-" + k); f.value = state[k] || "";
+  f.addEventListener("input", e => { state[k] = e.target.value; lagre(); copycard($("#c4"), "Steg 5: Tilbakemelding", p4()); });
+});
+if (state.rolle && !ROLLER[state.rolle]) $("#rolle-annet").value = state.rolle;
 render();
 </script>
 </body>

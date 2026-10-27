@@ -11,20 +11,9 @@
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0}
-img{max-width:100%}
-/* Layout: workshop-vegg med prikkrutenett, post-it-faner øverst, én fase per skjerm, kort med tykk strek og harde skygger */
 :root {
-  --wall: #ffffff;
-  --dot: #d9d9d4;
-  --ink: #121212;
-  --card: #ffffff;
-  --soft: #5b5b57;
-  --onnote: #121212;
-  --yellow: #ffd23f;
-  --pink: #ff9eb1;
-  --mint: #8ee0b8;
-  --lilac: #c4b5ff;
-  --note: var(--yellow);
+  --wall: #ffffff; --dot: #d9d9d4; --ink: #121212; --card: #ffffff; --soft: #5b5b57; --onnote: #121212;
+  --yellow: #ffd23f; --pink: #ff9eb1; --mint: #8ee0b8; --lilac: #c4b5ff; --note: var(--yellow);
   --display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
   --body: "Figtree", "Segoe UI", system-ui, sans-serif;
   --hand: "Caveat", "Comic Sans MS", cursive;
@@ -32,157 +21,83 @@ img{max-width:100%}
   --shadow: 4px 4px 0 var(--ink);
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --wall: #17171b; --dot: #2c2c33; --ink: #f2f2ee; --card: #212127; --soft: #b4b4ae;
-    --yellow: #ffd23f; --pink: #ff9eb1; --mint: #8ee0b8; --lilac: #c4b5ff; color-scheme: dark;
-  }
+  :root:not([data-theme="light"]) { --wall: #17171b; --dot: #2c2c33; --ink: #f2f2ee; --card: #212127; --soft: #b4b4ae; color-scheme: dark; }
 }
-:root[data-theme="dark"] {
-  --wall: #17171b; --dot: #2c2c33; --ink: #f2f2ee; --card: #212127; --soft: #b4b4ae;
-  --yellow: #ffd23f; --pink: #ff9eb1; --mint: #8ee0b8; --lilac: #c4b5ff; color-scheme: dark;
-}
+:root[data-theme="dark"] { --wall: #17171b; --dot: #2c2c33; --ink: #f2f2ee; --card: #212127; --soft: #b4b4ae; color-scheme: dark; }
 html, body { background: var(--wall); color: var(--ink); }
 body {
   font-family: var(--body); font-size: 17px; line-height: 1.5;
-  background-image: radial-gradient(var(--dot) 1.4px, transparent 1.4px);
-  background-size: 22px 22px;
+  background-image: radial-gradient(var(--dot) 1.4px, transparent 1.4px); background-size: 22px 22px;
 }
-.wrap { max-width: 760px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 18px 72px; display: flex; flex-direction: column; gap: 26px; }
+.wrap { max-width: 720px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 22px 72px; display: flex; flex-direction: column; gap: 26px; }
+section.fase { display: flex; flex-direction: column; gap: 24px; }
+[data-fase="laere"] { --note: var(--yellow); }
+[data-fase="lage"] { --note: var(--pink); }
+[data-fase="prove"] { --note: var(--mint); }
 
-section.fase { display: flex; flex-direction: column; gap: 26px; }
 .hero { display: flex; flex-direction: column; gap: 12px; }
 .stamp { align-self: flex-start; background: var(--note); color: var(--onnote); border: var(--line); border-radius: 99px; padding: 3px 14px; font-weight: 700; font-size: 0.85rem; }
 h1, h2, h3 { font-family: var(--display); font-weight: 800; margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
-h1 { font-size: clamp(2.3rem, 8vw, 3.6rem); line-height: 0.98; }
-h2 { font-size: clamp(1.9rem, 6vw, 2.7rem); line-height: 1.02; }
-h3 { font-size: 1.3rem; line-height: 1.15; }
+h1 { font-size: clamp(2.3rem, 8vw, 3.4rem); line-height: 0.98; }
+h2 { font-size: clamp(1.9rem, 6vw, 2.5rem); line-height: 1.02; }
+h3 { font-size: 1.25rem; line-height: 1.15; }
 h1 mark, h2 mark { background: linear-gradient(transparent 55%, var(--note) 55%, var(--note) 92%, transparent 92%); color: inherit; padding: 0 .08em; }
 p { margin: 0; max-width: 62ch; }
-.lead { font-size: 1.15rem; color: var(--soft); }
-.hand { font-family: var(--hand); font-size: 1.45rem; line-height: 1.1; }
+.lead { font-size: 1.12rem; color: var(--soft); }
+.muted { color: var(--soft); }
+.steg { display: flex; flex-direction: column; gap: 12px; }
 
-.steg { display: flex; flex-direction: column; gap: 14px; }
-.steg-head { display: flex; gap: 12px; align-items: center; }
-.num { flex: none; width: 34px; height: 34px; border-radius: 50%; border: var(--line); background: var(--card); display: grid; place-items: center; font-family: var(--display); font-weight: 800; }
-
-.postit { background: var(--note); color: var(--onnote); border: var(--line); border-radius: 4px; padding: 14px 16px; box-shadow: var(--shadow); transform: rotate(-0.8deg); max-width: 520px; display: flex; flex-direction: column; gap: 4px; }
+.postit { background: var(--note); color: var(--onnote); border: var(--line); border-radius: 4px; padding: 14px 16px; box-shadow: var(--shadow); transform: rotate(-0.8deg); max-width: 540px; display: flex; flex-direction: column; gap: 4px; }
+.postit.right { transform: rotate(0.6deg); }
+.postit.lilla { background: var(--lilac); }
 .postit b { font-family: var(--display); font-weight: 800; }
-.postit.right { transform: rotate(0.7deg); align-self: flex-end; }
+.postit ul { margin: 4px 0 0; padding-left: 1.1em; }
 
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { all: unset; cursor: pointer; padding: 8px 16px; border: var(--line); border-radius: 99px; background: var(--card); font-weight: 600; font-size: 0.95rem; transition: transform .1s; }
-.chip:hover { transform: translateY(-1px); }
-.chip[aria-pressed="true"] { background: var(--ink); color: var(--wall); }
-.chip:focus-visible { outline: 3px solid var(--note); outline-offset: 2px; }
-input[type=text] { font: inherit; color: var(--ink); background: var(--card); border: var(--line); border-radius: 12px; padding: 10px 14px; width: 100%; max-width: 360px; box-sizing: border-box; }
-input[type=text]:focus-visible { outline: 3px solid var(--note); outline-offset: 1px; }
+.link { all: unset; cursor: pointer; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; font-size: 0.95rem; align-self: flex-start; }
+.link:focus-visible { outline: 3px solid var(--note); outline-offset: 2px; }
 
-.choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
-.choice {
-  all: unset; cursor: pointer; position: relative; background: var(--card); border: var(--line); border-radius: 16px; padding: 16px;
-  display: flex; flex-direction: column; gap: 6px; min-width: 0; transition: transform .12s, box-shadow .12s;
-}
+.problem { background: var(--note); color: var(--onnote); border: var(--line); border-radius: 4px; box-shadow: var(--shadow); padding: 14px 18px 10px; display: flex; flex-direction: column; gap: 4px; transform: rotate(-0.5deg); }
+.problem label { font-family: var(--display); font-weight: 800; font-size: 1.05rem; }
+.problem textarea { all: unset; font-family: var(--hand); font-size: 1.6rem; line-height: 1.15; min-height: 2.4em; width: 100%; color: var(--onnote); white-space: pre-wrap; overflow-wrap: anywhere; }
+.problem textarea::placeholder { color: var(--onnote); opacity: .45; }
+.problem:focus-within { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+.choice { all: unset; cursor: pointer; background: var(--card); border: var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; transition: transform .12s, box-shadow .12s; }
 .choice:hover { transform: translate(-2px, -2px); box-shadow: var(--shadow); }
-.choice b { font-family: var(--display); font-weight: 800; font-size: 1.15rem; line-height: 1.15; }
+.choice b { font-family: var(--display); font-weight: 800; font-size: 1.12rem; line-height: 1.15; }
 .choice small { color: var(--soft); font-size: 0.92rem; line-height: 1.4; }
 .choice .ic { font-size: 1.6rem; line-height: 1; }
-.choice .badge { position: absolute; top: -12px; right: 12px; background: var(--note); color: var(--onnote); border: var(--line); border-radius: 99px; padding: 0 10px; font-family: var(--hand); font-size: 1.15rem; transform: rotate(3deg); }
 .choice[aria-pressed="true"] { background: var(--note); color: var(--onnote); box-shadow: var(--shadow); transform: translate(-2px, -2px); }
 .choice[aria-pressed="true"] small { color: var(--onnote); }
 .choice:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
-/* kopi-kortet */
+/* kopi-kortet med de tre stegene inni */
 .copycard { background: var(--card); border: var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 18px; display: flex; flex-direction: column; gap: 14px; }
-.copycard .what { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-.copycard .what h3 { font-size: 1.15rem; }
-.preview { position: relative; color: var(--soft); font-size: 0.95rem; white-space: pre-wrap; word-break: break-word; max-height: 7.5em; overflow: hidden; border-top: 2px dashed var(--dot); padding-top: 12px; }
-.preview::after { content: ""; position: absolute; inset: auto 0 0 0; height: 3em; background: linear-gradient(transparent, var(--card)); }
-.copycard.open .preview { max-height: none; }
-.copycard.open .preview::after { display: none; }
-.link { all: unset; cursor: pointer; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; font-size: 0.92rem; align-self: flex-start; }
-.link:focus-visible { outline: 3px solid var(--note); outline-offset: 2px; }
+.gjor { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.gjor li { display: flex; gap: 12px; align-items: center; min-width: 0; }
+.gjor .n { flex: none; width: 32px; height: 32px; border-radius: 50%; border: var(--line); display: grid; place-items: center; font-family: var(--display); font-weight: 800; background: var(--note); color: var(--onnote); }
+.gjor li + li .n { background: var(--card); color: var(--ink); }
+.copycard details summary { cursor: pointer; font-weight: 600; font-size: 0.92rem; color: var(--soft); }
+.copycard pre { white-space: pre-wrap; word-break: break-word; font: inherit; font-size: 0.88rem; color: var(--soft); margin: 10px 0 0; border-top: 2px dashed var(--dot); padding-top: 10px; }
 
-.btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 22px; border: var(--line); border-radius: 99px; font-family: var(--display); font-weight: 800; font-size: 1.05rem; background: var(--note); color: var(--onnote); box-shadow: var(--shadow); transition: transform .1s, box-shadow .1s; }
+.btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 22px; border: var(--line); border-radius: 99px; font-family: var(--display); font-weight: 800; font-size: 1.05rem; background: var(--note); color: var(--onnote); box-shadow: var(--shadow); transition: transform .1s, box-shadow .1s; text-align: center; }
 .btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
 .btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
 .btn.done { background: var(--mint); }
 .btn.plain { background: var(--card); color: var(--ink); }
 .btn.small { padding: 8px 16px; font-size: 0.95rem; }
 .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-.btn[disabled] { opacity: .35; cursor: not-allowed; box-shadow: none; }
 
-.checks { display: flex; flex-direction: column; gap: 10px; }
-.checks label { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-weight: 500; }
-.checks input { appearance: none; flex: none; width: 24px; height: 24px; border: var(--line); border-radius: 6px; background: var(--card); margin: 0; display: grid; place-items: center; cursor: pointer; }
-.checks input:checked { background: var(--note); }
-.checks input:checked::after { content: "✓"; color: var(--onnote); font-weight: 800; font-size: 0.95rem; }
-.checks input:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
-
-.minis { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-.mini { background: var(--card); border: var(--line); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-.mini b { font-family: var(--display); font-weight: 800; font-size: 1.1rem; }
-.mini p { color: var(--soft); font-size: 0.93rem; }
-.inspo { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
-
-.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.trio div, .trio label { border: var(--line); border-radius: 12px; padding: 10px 12px; background: var(--card); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.trio b { font-family: var(--display); font-weight: 800; }
-.trio span { font-size: 0.88rem; color: var(--soft); }
-.trio textarea.fb { font: inherit; color: var(--ink); background: var(--wall); border: 2px solid var(--dot); border-radius: 8px; padding: 6px 8px; margin-top: 6px; width: 100%; box-sizing: border-box; resize: vertical; }
-.trio textarea.fb:focus-visible { outline: 3px solid var(--note); outline-offset: 1px; border-color: var(--ink); }
-
-.big { font-family: var(--display); font-weight: 800; font-size: clamp(1.8rem, 6vw, 2.5rem); line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance; }
-.choice-sum { font-weight: 600; }
-.choice-sum em { font-style: normal; background: var(--note); color: var(--onnote); border-radius: 6px; padding: 0 6px; }
-
-footer.nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding-top: 6px; }
-
-[data-fase="laere"] { --note: var(--yellow); }
-[data-fase="lage"] { --note: var(--pink); }
-[data-fase="prove"] { --note: var(--mint); }
-[data-fase="verdi"] { --note: var(--lilac); }
-
-@media (max-width: 560px) {
-  body { font-size: 16px; }
-  .trio { grid-template-columns: 1fr; }
-  .postit, .postit.right { transform: none; align-self: stretch; }
-}
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-
-.muted { color: var(--soft); }
-[data-fase="lage"] { --note: var(--pink); }
-
-/* fremdrift: tre faser med steg-prikker */
-nav.progress { display: grid; grid-template-columns: 2fr 1fr 4fr; gap: 12px; }
-.grp { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.grp > span { font-family: var(--display); font-weight: 800; font-size: 0.95rem; opacity: .5; }
-.grp.aktiv > span { opacity: 1; }
-.dots { display: flex; gap: 5px; }
-.dots button { all: unset; cursor: pointer; flex: 1; height: 12px; border: 2px solid var(--ink); border-radius: 99px; background: var(--card); transition: height .12s; }
-.dots button[data-done="1"] { background: var(--c); }
-.dots button[aria-current="step"] { background: var(--c); height: 20px; box-shadow: 2px 2px 0 var(--ink); }
-.dots button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
-
-/* rytmen: kopier → Gemini → tilbake */
-.loop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.loop div { border: 2px dashed var(--soft); border-radius: 12px; padding: 8px 12px; font-size: 0.9rem; display: flex; gap: 8px; align-items: baseline; min-width: 0; }
-.loop b { font-family: var(--display); font-weight: 800; }
-.tipsrad { display: flex; flex-direction: column; gap: 4px; font-size: 0.92rem; color: var(--soft); }
-
-/* felt */
-.felter { display: flex; flex-direction: column; gap: 14px; }
-.problem { background: var(--note); color: var(--onnote); border: var(--line); border-radius: 4px; box-shadow: var(--shadow); padding: 14px 18px 10px; display: flex; flex-direction: column; gap: 4px; }
-.problem:nth-child(1) { transform: rotate(-0.6deg); }
-.problem:nth-child(2) { transform: rotate(0.5deg); background: var(--mint); }
-.problem label { font-family: var(--display); font-weight: 800; font-size: 1.05rem; }
-.problem textarea { all: unset; font-family: var(--hand); font-size: 1.6rem; line-height: 1.15; min-height: 2.4em; width: 100%; color: var(--onnote); white-space: pre-wrap; overflow-wrap: anywhere; }
-.problem textarea::placeholder { color: var(--onnote); opacity: .45; }
-.problem:focus-within { outline: 3px solid var(--ink); outline-offset: 3px; }
-textarea.field { font: inherit; color: var(--ink); background: var(--card); border: var(--line); border-radius: 12px; padding: 10px 14px; width: 100%; box-sizing: border-box; min-height: 64px; resize: vertical; }
-textarea.field:focus-visible { outline: 3px solid var(--note); outline-offset: 1px; }
 details.hjelp { border: 2px dashed var(--soft); border-radius: 14px; padding: 12px 14px; }
 details.hjelp summary { cursor: pointer; font-weight: 700; }
 details.hjelp[open] summary { margin-bottom: 12px; }
+details.hjelp ul { margin: 10px 0 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 8px; }
+details.ekstra { border: var(--line); border-radius: 16px; padding: 14px 16px; background: var(--card); }
+details.ekstra summary { cursor: pointer; font-family: var(--display); font-weight: 800; font-size: 1.1rem; }
+details.ekstra[open] summary { margin-bottom: 12px; }
+details.ekstra .copycard { box-shadow: none; border-width: 2px; }
+
 .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .rules div { border: var(--line); border-radius: 12px; padding: 10px 14px; background: var(--card); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .rules b { font-family: var(--display); font-weight: 800; }
@@ -190,10 +105,27 @@ details.hjelp[open] summary { margin-bottom: 12px; }
 .rules .ja b::before { content: "✓ "; }
 .rules .nei b::before { content: "✕ "; }
 
+.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.trio label { border: var(--line); border-radius: 12px; padding: 10px 12px; background: var(--card); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.trio b { font-family: var(--display); font-weight: 800; }
+.trio span { font-size: 0.88rem; color: var(--soft); }
+.trio textarea { font: inherit; color: var(--ink); background: var(--wall); border: 2px solid var(--dot); border-radius: 8px; padding: 6px 8px; margin-top: 6px; width: 100%; resize: vertical; }
+.trio textarea:focus-visible { outline: 3px solid var(--note); outline-offset: 1px; border-color: var(--ink); }
+
+textarea.field { font: inherit; color: var(--ink); background: var(--card); border: var(--line); border-radius: 12px; padding: 10px 14px; width: 100%; min-height: 64px; resize: vertical; }
+textarea.field:focus-visible { outline: 3px solid var(--note); outline-offset: 1px; }
+.feil { font-weight: 600; border: var(--line); border-radius: 12px; padding: 10px 14px; background: var(--pink); color: var(--onnote); }
+.big { font-family: var(--display); font-weight: 800; font-size: clamp(1.7rem, 6vw, 2.3rem); line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance; }
+
+.oppg { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; counter-reset: o; }
+.oppg li { counter-increment: o; background: var(--card); border: var(--line); border-radius: 14px; padding: 12px 14px 12px 58px; position: relative; display: flex; flex-direction: column; gap: 2px; }
+.oppg li::before { content: counter(o); position: absolute; left: 14px; top: 12px; width: 30px; height: 30px; border: var(--line); border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 800; background: var(--note); color: var(--onnote); }
+.oppg b { font-family: var(--display); font-weight: 800; }
+.oppg span { color: var(--soft); font-size: 0.95rem; }
+
 /* idékort */
 .kort { --k: var(--mint); background: var(--card); color: var(--ink); border: var(--line); border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); overflow: hidden; }
 .kort .band { background: var(--k); color: var(--onnote); border-bottom: var(--line); padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; }
-.kort .band span:last-child { background: var(--card); color: var(--ink); border: 2px solid var(--onnote); border-radius: 99px; padding: 1px 10px; letter-spacing: 0; text-transform: none; }
 .kort .body { padding: 18px; display: flex; flex-direction: column; gap: 18px; }
 .kort h3.tittel { font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.05; }
 .kort .par { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: stretch; }
@@ -210,16 +142,18 @@ details.hjelp[open] summary { margin-bottom: 12px; }
 .kort .laerte { border-top: 2px dashed var(--dot); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
 .kort .laerte p { font-family: var(--hand); font-size: 1.4rem; line-height: 1.15; }
 .kort .fot { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 0.82rem; color: var(--soft); border-top: 2px solid var(--dot); padding-top: 10px; }
-.kort-knapper { display: flex; flex-wrap: wrap; gap: 10px; }
-.feil { font-weight: 600; border: var(--line); border-radius: 12px; padding: 10px 14px; background: var(--pink); color: var(--onnote); }
+.knapper { display: flex; flex-wrap: wrap; gap: 10px; }
+
+footer.nav { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding-top: 6px; }
+footer.nav .spacer { flex: 1; }
 
 @media (max-width: 560px) {
-  nav.progress { gap: 8px; }
-  .grp > span { font-size: 0.8rem; }
-  .loop, .rules, .kort .seksjoner, .kort .tall, .kort .par { grid-template-columns: 1fr; }
+  body { font-size: 16px; }
+  .postit, .postit.right, .problem { transform: none; }
+  .trio, .rules, .kort .seksjoner, .kort .tall, .kort .par { grid-template-columns: 1fr; }
   .kort .par .pil { transform: rotate(90deg); justify-self: center; }
-  .problem:nth-child(n) { transform: none; }
 }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 @media print {
   body { background: #fff !important; }
   body * { visibility: hidden; }
@@ -229,74 +163,52 @@ details.hjelp[open] summary { margin-bottom: 12px; }
 </style>
 </head>
 <body>
-
 <div class="wrap">
-  <nav class="progress" id="progress" aria-label="Fremdrift"></nav>
 
   <!-- 1 BESKRIV -->
   <section class="fase" id="s1" data-fase="laere">
     <div class="hero">
       <span class="stamp" data-stamp></span>
       <h1>Lære. Lage. <mark>Prøve.</mark></h1>
-      <p class="lead">På én time lager du en liten KI-løsning på et problem fra din egen jobb. Appen viser deg hva du skal gjøre, og når du skal bytte mellom appen og Gemini.</p>
+      <p class="lead">Du lager en liten KI-løsning på et problem fra jobben din. Siden her gir deg teksten du skal lime inn i Gemini, ett steg om gangen.</p>
+      <button class="link" id="til-fri" type="button">Bruker du KI mye? Se bare oppgavene →</button>
     </div>
-    <div class="steg">
-      <h3>Hva jobber du med?</h3>
-      <div class="chips" id="roller"></div>
-      <input type="text" id="rolle-annet" placeholder="Eller skriv selv" aria-label="Skriv rollen din selv">
+    <div class="problem">
+      <label for="problem">Hva vil du gjøre noe med?</label>
+      <textarea id="problem" rows="2" placeholder="Skriv med egne ord …"></textarea>
     </div>
+    <p class="muted">Det trenger ikke være gjennomtenkt. Gemini hjelper deg å spisse det. Er du usikker, kan du la feltet stå tomt.</p>
     <div class="steg">
-      <h3>Hva vil du gjøre noe med?</h3>
-      <div class="felter">
-        <div class="problem">
-          <label for="problem">Hvilket problem skal fikses?</label>
-          <textarea id="problem" rows="2" placeholder="Skriv med egne ord …"></textarea>
-        </div>
-        <div class="problem">
-          <label for="bedre">Hva skal bli bedre?</label>
-          <textarea id="bedre" rows="2" placeholder="For eksempel: raskere svar, færre feil, mindre frustrasjon …"></textarea>
-        </div>
-      </div>
-      <p class="muted">Det trenger ikke være gjennomtenkt. Gemini hjelper deg å spisse det.</p>
-      <details class="hjelp">
-        <summary>Står du fast? Lån et problem</summary>
-        <div class="choices" id="ferdige"></div>
-      </details>
+      <h3>Eller lån et problem</h3>
+      <p class="muted">Da får du en ferdig rutine eller tekst å jobbe med.</p>
+      <div class="choices" id="ferdige"></div>
     </div>
   </section>
 
-  <!-- 2 INTERVJU -->
+  <!-- 2 SPISS -->
   <section class="fase" id="s2" data-fase="laere" hidden>
     <div class="hero">
       <span class="stamp" data-stamp></span>
       <h2>Spiss ideen <mark>sammen med Gemini</mark></h2>
-      <p class="lead">Gemini intervjuer deg om problemet og hva det koster i dag. Til slutt får du en idé som er liten nok til å lage på 15 minutter.</p>
+      <p class="lead">Gemini stiller deg noen spørsmål og foreslår en liten prototype, for eksempel en veiviser, en sjekkliste, en kalkulator eller en enkel KI-assistent.</p>
     </div>
     <div class="postit">
       <b>Før du starter</b>
-      <span>Gå til <b>gemini.google.com</b> og start en ny chat. Bruk den samme chatten resten av økten.</span>
+      <span>Åpne <b>gemini.google.com</b> i en ny fane og start en ny chat. Bruk den samme chatten hele veien.</span>
     </div>
-    <div class="steg">
-      <h3>Dette kan du ende opp med</h3>
-      <p class="muted">Gemini foreslår 2–3 prototyper som passer ditt problem. Alle kan klikkes i og virker.</p>
-      <div class="minis inspo">
-        <div class="mini"><b>🧭 Veiviser</b><p>Tar deg gjennom en søknad eller et vedtak, ett spørsmål om gangen.</p></div>
-        <div class="mini"><b>✅ Sjekkliste</b><p>Huker av det du har gjort, og sier hva som gjenstår.</p></div>
-        <div class="mini"><b>🧮 Kalkulator</b><p>Regner ut ferie, frister eller kostnader på sekunder.</p></div>
-        <div class="mini"><b>💬 KI-assistent</b><p>En chatbot som svarer ut fra en rutine eller et regelverk.</p></div>
-      </div>
-      <p class="muted">Bygger prototypen på en tekst du har, får du også se originalen og den nye, forståelige versjonen side om side.</p>
-    </div>
-    <div data-loop></div>
     <div class="copycard" id="c1"></div>
+    <div class="postit right">
+      <b>Har du en rutine, mal eller tekst?</b>
+      <span>Ha den klar. Når Gemini spør, laster du den opp med vedleggsknappen i chatfeltet, eller limer inn teksten. Da bygger Gemini på det du faktisk har.</span>
+    </div>
     <details class="hjelp">
-      <summary>Kan jeg legge ved egne dokumenter?</summary>
-      <p style="margin-bottom:12px">Ja, når Gemini spør om det. Bruk vedleggsknappen i Gemini.</p>
+      <summary>Hva er greit å laste opp?</summary>
       <div class="rules">
         <div class="ja"><b>Greit</b><ul><li>Maler og standardbrev</li><li>Rutiner og veiledere</li><li>Tekster fra kommunens nettside</li></ul></div>
         <div class="nei"><b>Ikke greit</b><ul><li>Brev til en bestemt person</li><li>Saker med navn eller fødselsnummer</li><li>Helse- og personalsaker</li></ul></div>
       </div>
     </details>
+    <div data-hjelp="2"></div>
   </section>
 
   <!-- 3 BYGG -->
@@ -304,99 +216,136 @@ details.hjelp[open] summary { margin-bottom: 12px; }
     <div class="hero">
       <span class="stamp" data-stamp></span>
       <h2>Bygg en <mark>første versjon</mark></h2>
-      <p class="lead">Gemini bygger prototypen dere ble enige om, og du kan prøve den med en gang. Det er en prototype: noe å vise frem og teste, ikke noe som skal i drift.</p>
+      <p class="lead">Gemini bygger prototypen dere ble enige om, og du kan prøve den med en gang. Det er noe å vise frem og teste, ikke noe som skal i drift.</p>
     </div>
-    <div data-loop></div>
     <div class="copycard" id="c2"></div>
+    <div class="postit">
+      <b>Ser du bare kode, og ingen app?</b>
+      <span>Skriv «Vis den i Canvas». Hjelper ikke det, se etter Canvas under verktøyene i chatfeltet.</span>
+    </div>
+    <div data-hjelp="3"></div>
   </section>
 
-  <!-- 4 SIMULER -->
-  <section class="fase" id="s4" data-fase="prove" hidden>
+  <!-- 4 JUSTER -->
+  <section class="fase" id="s4" data-fase="lage" hidden>
     <div class="hero">
       <span class="stamp" data-stamp></span>
-      <h2>La Gemini <mark>teste som en bruker</mark></h2>
-      <p class="lead">Gemini spiller en realistisk bruker som prøver løsningen din, og forteller hvor det skurrer. Så velger du hva som skal rettes.</p>
+      <h2>Gjør den <mark>til din</mark></h2>
+      <p class="lead">Prøv appen selv. Hva vil du endre før noen andre ser den? Du er fagpersonen, så du vet best hva som stemmer.</p>
     </div>
-    <div data-loop></div>
-    <div class="copycard" id="c3"></div>
+    <div class="problem">
+      <label for="juster">Dette vil jeg endre</label>
+      <textarea id="juster" rows="3" placeholder="For eksempel: Forsiden har for mye tekst. Knappen «Send» bør hete «Neste». Det mangler et spørsmål om …"></textarea>
+    </div>
+    <p class="muted">Tenk på: Er noe uklart? Mangler noe? Stemmer innholdet med virkeligheten? Står du fast, la feltet stå tomt, så foreslår Gemini noe.</p>
+    <div class="copycard" id="c-juster"></div>
+    <p class="muted">Vil du endre mer etterpå? Skriv rett i Gemini så mange ganger du vil.</p>
+    <div data-hjelp="4"></div>
   </section>
 
-  <!-- 5 SIDEMANN -->
+  <!-- 5 TEST -->
   <section class="fase" id="s5" data-fase="prove" hidden>
     <div class="hero">
       <span class="stamp" data-stamp></span>
       <h2>Test på <mark>sidemannen</mark></h2>
-      <p class="lead">Nå er det et ekte menneske sin tur. Bytt plass og prøv hverandres løsning uten å forklare noe.</p>
+      <p class="lead">Bytt plass og prøv hverandres løsning. Ikke forklar noe. Se hva som skjer.</p>
     </div>
-    <p>Skriv ned det sidemannen sier om løsningen din:</p>
     <div class="trio">
-      <label for="fb-liker"><b>Liker</b><span>Hva fungerte?</span><textarea class="fb" id="fb-liker" rows="3"></textarea></label>
-      <label for="fb-lurer"><b>Lurer på</b><span>Hva var uklart?</span><textarea class="fb" id="fb-lurer" rows="3"></textarea></label>
-      <label for="fb-onsker"><b>Ønsker</b><span>Hva mangler?</span><textarea class="fb" id="fb-onsker" rows="3"></textarea></label>
+      <label for="fb-liker"><b>Liker</b><span>Hva fungerte?</span><textarea id="fb-liker" rows="3"></textarea></label>
+      <label for="fb-lurer"><b>Lurer på</b><span>Hva var uklart?</span><textarea id="fb-lurer" rows="3"></textarea></label>
+      <label for="fb-onsker"><b>Ønsker</b><span>Hva mangler?</span><textarea id="fb-onsker" rows="3"></textarea></label>
     </div>
-    <p>Tilbakemeldingen settes inn i teksten under. Kopier og lim inn i Gemini.</p>
-    <div data-loop></div>
-    <div class="copycard" id="c4"></div>
+    <p class="muted">Det du skriver her, kommer med i teksten du kopierer.</p>
+    <div class="copycard" id="c3"></div>
+    <details class="ekstra">
+      <summary>Ferdig tidlig? La Gemini teste som en bruker</summary>
+      <div class="copycard" id="c3b"></div>
+    </details>
+    <div data-hjelp="5"></div>
   </section>
 
-  <!-- 6 GEVINST -->
+  <!-- 6 IDÉKORT -->
   <section class="fase" id="s6" data-fase="prove" hidden>
     <div class="hero">
       <span class="stamp" data-stamp></span>
       <h2>Var det <mark>verdt det?</mark></h2>
-      <p class="lead">Gemini sammenligner med gevinstvurderingen fra starten, spør hva du lærte, og skriver idékortet ditt.</p>
+      <p class="lead">Gemini spør hva du lærte og skriver idékortet ditt.</p>
     </div>
-    <div data-loop></div>
-    <div class="copycard" id="c5"></div>
-  </section>
-
-  <!-- 7 KORT -->
-  <section class="fase" id="s7" data-fase="prove" hidden>
-    <div class="hero">
-      <span class="stamp" data-stamp></span>
-      <h2>Idékortet <mark>ditt</mark></h2>
-      <p class="lead">Lim inn idékortet fra Gemini, fra IDÉ til NESTE STEG.</p>
+    <div class="copycard" id="c4"></div>
+    <div class="steg">
+      <h3>Lim inn idékortet her</h3>
+      <textarea class="field" id="kort-inn" rows="4" placeholder="IDÉ: …&#10;PROBLEM: …" aria-label="Lim inn idékortet"></textarea>
+      <p class="feil" id="kort-feil" hidden>Fant ikke idékortet. Sjekk at du kopierte hele kortet fra Gemini, fra IDÉ til NESTE STEG.</p>
     </div>
-    <textarea class="field" id="kort-inn" rows="4" placeholder="IDÉ: …&#10;PROBLEM: …" aria-label="Lim inn idékortet"></textarea>
-    <p class="feil" id="kort-feil" hidden>Fant ikke idékortet i teksten. Sjekk at du kopierte hele kortet fra Gemini, fra IDÉ til NESTE STEG.</p>
-    <article class="kort" id="kort"></article>
-    <div class="kort-knapper">
-      <button class="btn" id="kort-kopier" type="button" data-label="Kopier som tekst">Kopier som tekst</button>
-      <button class="btn plain" id="kort-pdf" type="button" hidden>Lagre som PDF</button>
+    <article class="kort" id="kort" hidden></article>
+    <div class="knapper" id="kort-knapper" hidden>
+      <button class="btn" id="kort-bilde" type="button">Last ned som bilde</button>
+      <button class="btn plain" id="kort-epost" type="button">Send på e-post</button>
+      <button class="btn plain" id="kort-del" type="button" hidden>Del …</button>
+      <button class="btn plain" id="kort-kopier" type="button" data-label="Kopier som tekst">Kopier som tekst</button>
     </div>
-    <p class="muted">Del kortet der arrangøren viser deg, for eksempel som skjermbilde eller tekst.</p>
+    <button class="link" id="kort-pdf" type="button" hidden>Skriv ut eller lagre som PDF</button>
+    <p class="muted" id="kort-status" aria-live="polite"></p>
+    <div class="postit lilla">
+      <b>Til felles refleksjon</b>
+      <span>Tenk over dette før vi snakker sammen:</span>
+      <ul>
+        <li>Hva overrasket deg?</li>
+        <li>Hvor tok KI feil, og hvordan oppdaget du det?</li>
+        <li>Hvilken oppgave i jobben din kunne du prøvd dette på neste uke?</li>
+      </ul>
+    </div>
     <p class="big">KI gir deg et godt utkast. Du er fagpersonen som gjør det riktig.</p>
   </section>
 
-  <footer class="nav">
+  <!-- BARE OPPGAVENE -->
+  <section class="fase" id="fri" data-fase="laere" hidden>
+    <div class="hero">
+      <span class="stamp">For deg som bruker KI mye</span>
+      <h2>Bare <mark>oppgavene</mark></h2>
+      <p class="lead">Samme løp, men du skriver promptene selv i Gemini.</p>
+    </div>
+    <ol class="oppg">
+      <li><b>Finn et problem</b><span>Noe fra jobben som skjer ofte, tar tid eller skaper frustrasjon.</span></li>
+      <li><b>La Gemini intervjue deg</b><span>Land én liten idé som kan bli en klikkbar prototype på 15 minutter. Noter hvor ofte det skjer og hvor lang tid det tar i dag. Last opp rutiner, maler eller tekster hvis du har.</span></li>
+      <li><b>Bygg prototypen i Canvas</b><span>Maks fem skjermer. Alt skal virke.</span></li>
+      <li><b>Juster selv</b><span>Prøv den, og be Gemini endre det du vil før noen andre ser den.</span></li>
+      <li><b>Test på sidemannen</b><span>Ikke forklar noe. Noter liker, lurer på og ønsker, og rett det viktigste. Vil du mer: la Gemini spille en kritisk bruker.</span></li>
+      <li><b>Lag et idékort</b><span>Problem, løsning, grovt anslag i timer per måned, hva du lærte og neste steg.</span></li>
+    </ol>
+    <div class="rules">
+      <div class="ja"><b>Greit å laste opp</b><ul><li>Maler og standardbrev</li><li>Rutiner og veiledere</li><li>Tekster fra kommunens nettside</li></ul></div>
+      <div class="nei"><b>Ikke greit</b><ul><li>Brev til en bestemt person</li><li>Saker med navn eller fødselsnummer</li><li>Helse- og personalsaker</li></ul></div>
+    </div>
+    <div class="knapper">
+      <button class="btn small" id="til-kort" type="button">Lag plakat av idékortet</button>
+      <button class="btn plain small" id="til-veiledet" type="button">Bruk den veiledede versjonen</button>
+    </div>
+  </section>
+
+  <footer class="nav" id="nav">
     <button class="btn plain small" id="forrige" type="button">← Tilbake</button>
+    <span class="spacer"></span>
     <button class="btn" id="neste" type="button">Neste →</button>
   </footer>
 </div>
 
 <script>
+/* Sett inn arrangørens e-postadresse her hvis idékortene skal sendes dit. Tom = deltakeren velger mottaker selv. */
+const MOTTAKER = "";
+
 const STEG = [
-  { fase: "Lære", navn: "Beskriv problemet", min: 5 },
-  { fase: "Lære", navn: "Intervju med Gemini", min: 12 },
-  { fase: "Lage", navn: "Bygg prototypen", min: 13 },
-  { fase: "Prøve", navn: "Simulert bruker", min: 8 },
-  { fase: "Prøve", navn: "Test på sidemannen", min: 10 },
-  { fase: "Prøve", navn: "Ny gevinstvurdering", min: 7 },
-  { fase: "Prøve", navn: "Idékortet", min: 5 }
+  { fase: "Lære", navn: "Beskriv" },
+  { fase: "Lære", navn: "Spiss ideen" },
+  { fase: "Lage", navn: "Bygg" },
+  { fase: "Lage", navn: "Juster selv" },
+  { fase: "Prøve", navn: "Test på sidemannen" },
+  { fase: "Prøve", navn: "Idékortet" }
 ];
-const FASEFARGE = { "Lære": "var(--yellow)", "Lage": "var(--pink)", "Prøve": "var(--mint)" };
 const TILBAKE = "➜ Gå tilbake til nettsiden og trykk «Neste».";
-const ROLLER = {
-  "HR": "Vi svarer på de samme spørsmålene om permisjon og ferie om og om igjen.",
-  "Kommunikasjon": "Fagavdelingene sender oss tekster som er tunge å lese for innbyggerne.",
-  "Digitalisering": "Det tar lang tid å forklare nye digitale verktøy til ansatte som ikke er vant til dem.",
-  "IT": "Brukerstøtte får mange like henvendelser om passord, skrivere og tilganger.",
-  "Dokumentsenteret": "Ansatte er usikre på hva som skal arkiveres, og hvordan."
-};
 const FERDIGE = [
   { id: "it", ic: "🖥️", navn: "Spør IT-brukerstøtte", info: "Mange like spørsmål om passord, skrivere og tilganger.",
     problem: "IT-brukerstøtte får mange like spørsmål om passord, skrivere og tilganger, som allerede står i rutinene.",
-    bedre: "Ansatte får raskere svar, og brukerstøtte får mer tid til vanskelige saker.",
     grunnlag: `GRUNNLAG (fiktiv rutine):
 Glemt passord: Bruk «Glemt passord» på innloggingssiden og bekreft med telefonen din. Virker ikke det, ring brukerstøtte.
 Ny PC eller utstyr: Leder bestiller i selvbetjeningsportalen. Leveringstid er normalt fem virkedager.
@@ -406,12 +355,10 @@ Mistenkelig e-post: Ikke klikk på lenker. Trykk «Rapporter» i e-postprogramme
 Brukerstøtte er åpen hverdager kl. 08–15.30.` },
   { id: "brev", ic: "✉️", navn: "Et stivt svarbrev", info: "Brev om permisjon som mottakerne ikke forstår.",
     problem: "Svarbrevene våre om permisjon er så stive at folk ringer for å spørre hva de betyr.",
-    bedre: "Mottakerne forstår brevet første gang, og vi får færre oppfølgingsspørsmål.",
     grunnlag: `GRUNNLAG (fiktivt brev):
 Vedrørende Deres søknad om permisjon. Det vises til Deres søknad om permisjon uten lønn datert 12.08. Søknaden er behandlet i henhold til gjeldende permisjonsreglement, jf. punkt 4.2. Det meddeles herved at søknaden innvilges for perioden 01.11–31.01 under forutsetning av at tjenestemessige hensyn ikke tilsier annet. Det gjøres oppmerksom på at permisjonen medfører opphør av opptjening av feriepenger samt at pensjonsforhold kan bli berørt. Eventuelle spørsmål vedrørende dette rettes til HR-avdelingen.` },
   { id: "onboarding", ic: "👋", navn: "Første uke som nyansatt", info: "Nyansatte vet ikke hva de skal gjøre først.",
     problem: "Nyansatte får mye informasjon på en gang den første uka og vet ikke hva de skal gjøre først.",
-    bedre: "Nyansatte kommer tryggere i gang, og leder slipper å forklare det samme hver gang.",
     grunnlag: `GRUNNLAG (fiktiv rutine):
 Dag 1: Hent adgangskort i resepsjonen. Logg inn på PC-en med brukernavn fra velkomst-e-posten og bytt passord.
 Dag 1–2: Ta e-læringskursene i personvern og informasjonssikkerhet (ca. 1,5 time).
@@ -424,120 +371,100 @@ const FELT = [
   ["bedre", "HVA BLIR BEDRE"], ["ofte", "HVOR OFTE"], ["tid", "TID I DAG"], ["anslag", "GROVT ANSLAG"],
   ["endret", "ENDRET ETTER TESTING"], ["laerdom", "DETTE LÆRTE JEG"], ["neste", "NESTE STEG"]
 ];
-const EKSEMPEL = {
-  ide: "Spør IT – chatbot for vanlige spørsmål",
-  problem: "Brukerstøtte får mange like spørsmål som allerede står i rutinene.",
-  losning: "En chatbot som svarer ut fra rutinene og viser hvor svaret står.",
-  hvem: "Ansatte som trenger raskt svar, og brukerstøtte.",
-  bedre: "Raskere svar, mer tid til vanskelige saker, likere svar.",
-  ofte: "Ca. 40 ganger i uka", tid: "5–10 min hver gang", anslag: "Ca. 15 timer/mnd (40 × 4 × 6 min)",
-  endret: "Den simulerte brukeren spurte om ting som ikke stod i rutinen. Anslaget er nok litt høyt.",
-  laerdom: "Første utkast kom på sekunder, men den fant på en åpningstid. Jeg må sjekke alt.",
-  neste: "Teste med fem kolleger i to uker."
-};
+const H2C = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
 
-const state = { steg: 0, rolle: "", problem: "", bedre: "", ferdig: "", type: "", kort: "", liker: "", lurer: "", onsker: "" };
-try { Object.assign(state, JSON.parse(localStorage.getItem("ki-verksted-v5") || "{}")); } catch (e) {}
-const lagre = () => { try { localStorage.setItem("ki-verksted-v5", JSON.stringify(state)); } catch (e) {} };
+const state = { steg: 0, modus: "veiledet", problem: "", ferdig: "", juster: "", liker: "", lurer: "", onsker: "", kort: "" };
+try { Object.assign(state, JSON.parse(localStorage.getItem("ki-verksted-v7") || "{}")); } catch (e) {}
+const lagre = () => { try { localStorage.setItem("ki-verksted-v7", JSON.stringify(state)); } catch (e) {} };
 const $ = (s) => document.querySelector(s);
-const ferdig = () => FERDIGE.find(f => f.id === state.ferdig && f.problem === state.problem);
+const ferdig = () => FERDIGE.find(f => f.id === state.ferdig && f.problem === state.problem.trim());
 
-/* prompter */
+/* ---------- prompter ---------- */
 function p1() {
   const f = ferdig();
-  return `▶ STEG 2: LÆRE – intervju
+  const prob = state.problem.trim();
+  const om = prob
+    ? `PROBLEMET JEG VIL GJØRE NOE MED: «${prob}»`
+    : "Jeg har ikke bestemt meg for et problem ennå. Hjelp meg å finne ett: spør først hva jeg jobber med, og gi meg tre forslag å velge mellom.";
+  const vedlegg = f
+    ? "- Jeg har allerede lagt ved grunnlaget nederst i denne meldingen. Bruk det, og ikke be om flere filer."
+    : `- Spør om jeg har en rutine, mal eller tekst som hører til problemet. Svarer jeg ja: be meg laste den opp nå med vedleggsknappen i chatfeltet, eller lime inn teksten. VENT til jeg har gjort det før du går videre. Minn meg på å fjerne navn og andre personopplysninger.
+- Det jeg laster opp eller limer inn, er grunnlaget for prototypen.`;
+  return `▶ STEG 2: Spiss ideen
 
 SPILLEREGLER FOR HELE SAMTALEN:
-- Vi jobber i steg. Du går ALDRI videre til neste steg på egen hånd. Et nytt steg starter bare når jeg limer inn en melding som begynner med ▶ STEG.
-- Når et steg er ferdig, avslutter du med denne linjen og ingenting etter den:
+- Vi jobber i steg. Du går aldri videre på egen hånd. Et nytt steg starter bare når jeg limer inn en melding som begynner med ▶ STEG.
+- Avslutt hvert steg med denne linjen, og ingenting etter den:
   ${TILBAKE}
+- Skriv kort og i klarspråk. Jeg er kanskje ikke vant til KI.
+- Jeg kan når som helst gi deg egne instruksjoner eller laste opp filer. Følg dem.
 
-OM MEG: Jeg jobber med ${state.rolle || "[rolle]"} i Larvik kommune.
-PROBLEMET SOM SKAL FIKSES: «${state.problem.trim() || "[ikke fylt ut]"}»
-DETTE SKAL BLI BEDRE: «${state.bedre.trim() || "[ikke fylt ut]"}»
+Jeg jobber i Larvik kommune.
+${om}
 
-DIN OPPGAVE NÅ: Intervju meg, slik at vi lander én liten idé. Ikke lag noe ennå.
-- Still maks fem spørsmål, ett om gangen, merket «Spørsmål 1 av 5» osv. STOPP og vent på svar etter hvert spørsmål.
-- Spør om: hvem som merker problemet, hvordan det løses i dag, hvor ofte det skjer, omtrent hvor lang tid det tar hver gang, og om jeg har en rutine, mal eller tekst jeg kan legge ved (uten personopplysninger).
-- Hvis jeg er usikker, gi meg to–tre eksempler å velge mellom.
+DIN OPPGAVE NÅ: Intervju meg, så vi lander én liten idé. Ikke lag noe ennå.
+- Still maks fem spørsmål, ett om gangen, merket «Spørsmål 1 av 5» osv. Vent på svar etter hvert spørsmål.
+- Finn ut: hva jeg jobber med, hvem som merker problemet, hvordan det løses i dag, hvor ofte det skjer og omtrent hvor lang tid det tar.
+${vedlegg}
+- Er jeg usikker, gi meg to–tre eksempler å velge mellom.
 
-RAMMER FOR IDEEN:
-- Resultatet skal bli en fungerende, klikkbar prototype som kan lages på 15 minutter.
-- Maks fem skjermer. Ingen kobling til fagsystemer, ingen innlogging, ingen ekte personopplysninger.
+RAMMER: Ideen skal kunne bli en klikkbar prototype på 15 minutter. Maks fem skjermer, ingen innlogging, ingen kobling til fagsystemer, ingen ekte personopplysninger.
 
 NÅR INTERVJUET ER FERDIG:
-- Foreslå 2–3 ulike prototyper som passer problemet, for eksempel en veiviser, en sjekkliste, en kalkulator eller en KI-assistent. Én setning om hver.
-- La meg velge én, og vent på svar.
-- Oppsummer så kort:
-  IDEEN: én setning om prototypen jeg valgte
+- Foreslå 2–3 prototyper som passer, for eksempel en veiviser, en sjekkliste, en kalkulator eller en KI-assistent. Én setning om hver. La meg velge, og vent på svar.
+- Oppsummer så:
+  IDEEN: én setning
   GEVINST I DAG: hvor ofte × hvor lang tid = grovt anslag i timer per måned, og hva som blir bedre utover tid
 - Avslutt med tilbake-linjen.
 ${f ? "\n" + f.grunnlag + "\n" : ""}
 Start nå med Spørsmål 1 av 5, og ingenting annet.`;
 }
-function p2() {
-  return `▶ STEG 3: LAGE
+const p2 = () => `▶ STEG 3: Bygg
 
-Bygg prototypen vi ble enige om i steg 2, som en fungerende app i Canvas.
-
-KRAV:
-- Én HTML-side i Canvas som jeg kan klikke og bruke i forhåndsvisningen med en gang. Ikke beskriv den, bygg den.
-- Alt skal virke fra start til slutt. Ingen døde knapper.
-- Maks fem skjermer.
-- Fiktive data, ingen personopplysninger. Eksempelinnhold merkes som eksempel.
-- All tekst i klarspråk.
-- Bygger den på en tekst jeg har lagt ved, skal den ha en Før/Etter-bryter som viser originalen og den nye versjonen.
+Bygg prototypen vi ble enige om, som en fungerende app i Canvas. Ikke beskriv den, bygg den.
+- Alt skal virke fra start til slutt. Ingen døde knapper. Maks fem skjermer.
+- Bruk innholdet i det jeg har lastet opp eller limt inn. Ikke dikt opp regler, frister eller fakta. Mangler du innhold, lag eksempler og merk dem tydelig som eksempel.
+- Ingen personopplysninger. All tekst i klarspråk.
 - Lys bakgrunn, god kontrast, store knapper, fungerer på mobil.
+- Bygger den på en tekst jeg har gitt deg: legg inn en Før/Etter-bryter som viser originalen og den nye versjonen.
 
-Har jeg ikke lagt ved noe, og prototypen blir bedre med en rutine eller tekst jeg har: spør om jeg vil legge den ved, og vent på svar. Ellers: bygg med en gang.
+Skriv så én setning om hvordan jeg prøver den, og avslutt med tilbake-linjen.`;
+const pJuster = () => `▶ STEG 4: Juster selv
 
-Når appen er ferdig: skriv én setning om hvordan jeg prøver den, og avslutt med tilbake-linjen.`;
-}
-const P3 = `▶ STEG 4: PRØVE – simulert bruker
+Jeg har prøvd appen. ${state.juster.trim()
+  ? "Dette vil jeg endre:\n" + state.juster.trim()
+  : "Jeg er usikker på hva som bør endres. Se over appen og foreslå tre konkrete forbedringer, og spør hvilke jeg vil ha."}
 
-Spill en realistisk bruker fra målgruppen vi snakket om i steg 2. Gi personen et navn, en situasjon og litt tidspress.
-- La personen bruke løsningen vår i tre korte scener. Beskriv hva personen skriver, klikker på og leser i appen, og hvor hen stopper opp eller misforstår.
-- Se også etter knapper som ikke virker og ord brukeren ikke forstår.
-- Vær ærlig. Ikke vær snill.
-- List så opp de tre viktigste funnene, rangert.
-- Spør hvilket funn jeg vil rette, og VENT på svar.
-- Rett det jeg velger ved å oppdatere appen i Canvas.
-Avslutt med tilbake-linjen.`;
-const p4 = () => `▶ STEG 5: PRØVE – tilbakemelding fra en kollega
+Gjør endringene ved å oppdatere appen i Canvas, og si kort hva du endret. Er noe uklart, spør meg først.
+Kommer jeg med flere endringer etterpå, gjør du dem også, helt til jeg limer inn neste ▶ STEG.
+Avslutt hver runde med tilbake-linjen.`;
+const p3 = () => `▶ STEG 5: Tilbakemelding fra en kollega
 Liker: ${state.liker.trim() || "–"}
 Lurer på: ${state.lurer.trim() || "–"}
 Ønsker: ${state.onsker.trim() || "–"}
 
-Rett det viktigste ut fra tilbakemeldingen ved å oppdatere appen i Canvas. Si kort hva du endret.
-Avslutt med tilbake-linjen.`;
-const P5 = `▶ STEG 6: PRØVE – ny gevinstvurdering
+Rett det viktigste ut fra tilbakemeldingen ved å oppdatere appen i Canvas. Si kort hva du endret, og avslutt med tilbake-linjen.`;
+const p3b = () => `▶ STEG 5B: Simulert bruker
 
-Gå ut av eventuelle roller. Sammenlign med gevinstvurderingen fra steg 2.
-Still meg to spørsmål, ett om gangen, og vent på svar etter hvert:
-1. Etter testingen: tror du fortsatt på anslaget? Hva har endret seg?
+Spill en realistisk bruker fra målgruppen, med navn, situasjon og litt tidspress. Beskriv kort hvordan personen bruker appen, og hvor hen stopper opp eller misforstår. Vær ærlig, ikke snill.
+List de tre viktigste funnene, spør hvilket jeg vil rette, og vent på svar. Rett det jeg velger i Canvas, og avslutt med tilbake-linjen.`;
+const p4 = () => `▶ STEG 6: Var det verdt det?
+
+Gå ut av eventuelle roller. Still meg to spørsmål, ett om gangen, og vent på svar etter hvert:
+1. Etter testingen: tror du fortsatt på gevinstanslaget fra steg 2? Hva har endret seg?
 2. Hva lærte du om å bruke KI i dag?
 
 Skriv så idékortet i en kodeblokk. Bruk nøyaktig disse overskriftene med kolon, én linje per felt og maks to setninger per felt:
-IDÉ:
-PROBLEM:
-LØSNING:
-HVEM HAR NYTTE:
-HVA BLIR BEDRE:
-HVOR OFTE:
-TID I DAG:
-GROVT ANSLAG: (timer per måned, vis regnestykket kort)
-ENDRET ETTER TESTING:
-DETTE LÆRTE JEG:
-NESTE STEG:
+${FELT.map(([, l]) => l + ":" + (l === "GROVT ANSLAG" ? " (timer per måned, vis regnestykket kort)" : "")).join("\n")}
 
 Under kodeblokken skriver du bare: «➜ Kopier idékortet, gå tilbake til nettsiden og lim det inn.»
 Start nå med spørsmål 1.`;
 
-/* hjelpere */
+/* ---------- hjelpere ---------- */
 function el(tag, cls, tekst) { const e = document.createElement(tag); if (cls) e.className = cls; if (tekst != null) e.textContent = tekst; return e; }
-function kopier(tekst, btn, sel) {
+function kopier(tekst, btn, sel, okTekst) {
   const label = btn.dataset.label;
-  const ok = () => { btn.textContent = "Kopiert! Lim inn i Gemini"; btn.classList.add("done"); setTimeout(() => { btn.textContent = label; btn.classList.remove("done"); }, 2400); };
+  const ok = () => { btn.textContent = okTekst || "Kopiert! Lim inn i Gemini"; btn.classList.add("done"); setTimeout(() => { btn.textContent = label; btn.classList.remove("done"); }, 2400); };
   const gammelMetode = () => {
     try {
       const ta = document.createElement("textarea");
@@ -551,47 +478,63 @@ function kopier(tekst, btn, sel) {
   };
   const fallback = () => {
     if (gammelMetode()) { ok(); return; }
-    if (sel) { const r = document.createRange(); r.selectNodeContents(sel); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    if (sel) {
+      const d = sel.closest("details"); if (d) d.open = true;
+      const r = document.createRange(); r.selectNodeContents(sel); const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    }
     btn.textContent = "Marker teksten og kopier med Ctrl+C";
   };
   try { navigator.clipboard.writeText(tekst).then(ok, fallback); } catch (e) { fallback(); }
 }
-function copycard(box, tittel, tekst) {
-  box.innerHTML = ""; box.classList.remove("open");
-  const what = el("div", "what");
-  const btn = el("button", "btn", "Kopier"); btn.type = "button"; btn.dataset.label = "Kopier";
-  const pre = el("div", "preview", tekst);
-  const tog = el("button", "link", "Se hele teksten"); tog.type = "button";
-  tog.addEventListener("click", () => { box.classList.toggle("open"); tog.textContent = box.classList.contains("open") ? "Vis mindre" : "Se hele teksten"; });
-  btn.addEventListener("click", () => kopier(tekst, btn, pre));
-  what.append(el("h3", null, tittel), btn);
-  box.append(what, pre, tog);
-}
-function choices(box, items, aktiv, pick) {
+function copycard(box, tittel, hva, tekstFn, steg2, steg3) {
   box.innerHTML = "";
-  items.forEach(it => {
+  const btn = el("button", "btn", "Kopier teksten"); btn.type = "button"; btn.dataset.label = btn.textContent;
+  const det = el("details"); const pre = el("pre");
+  det.append(el("summary", null, "Se hva du sender"), pre);
+  det.addEventListener("toggle", () => { if (det.open) pre.textContent = tekstFn(); });
+  btn.addEventListener("click", () => { const t = tekstFn(); pre.textContent = t; kopier(t, btn, pre); });
+  const ol = el("ol", "gjor");
+  const rad = (nr, innhold) => { const li = el("li"); const n = el("span", "n", String(nr)); n.setAttribute("aria-hidden", "true"); li.append(n, innhold); ol.append(li); };
+  rad(1, btn);
+  rad(2, el("span", null, steg2 || "Lim inn i Gemini, og svar på det den spør om."));
+  rad(3, el("span", null, steg3 || "Kom tilbake hit når Gemini skriver ➜, og trykk «Neste»."));
+  box.append(el("h3", null, tittel), el("p", "muted", hva), ol, det);
+}
+function hjelp(nr) {
+  const d = el("details", "hjelp");
+  d.append(el("summary", null, "Oppfører Gemini seg rart? Helt normalt."));
+  d.append(el("p", null, "Gemini er litt som en ivrig sommervikar: flink og rask, men hopper av og til over ting eller finner på noe."));
+  const ul = el("ul");
+  [
+    `Si fra med egne ord. Skriv for eksempel «Nå hoppet du over noe, vi er på steg ${nr}» eller «Det var ikke det jeg mente». Klag gjerne – det virker overraskende godt.`,
+    "Henger du etter? Skriv «Vi har dårlig tid. Avslutt dette steget med det du har.»",
+    "Usikker? Bare prøv. Du kan ikke ødelegge noe. Det verste som kan skje, er et rart svar.",
+    "Teksten herfra er bare en startpakke. Du kan når som helst skrive egne instruksjoner eller laste opp filer i Gemini, bare ikke noe med personopplysninger."
+  ].forEach(t => ul.append(el("li", null, t)));
+  const li = el("li", null, "Har det gått helt i surr? Åpne en ny chat i Gemini og start fra steg 2. Det du har skrevet her, er lagret. ");
+  const b = el("button", "link", "Gå til steg 2"); b.type = "button"; b.addEventListener("click", () => gaTil(1));
+  li.append(b); ul.append(li);
+  d.append(ul);
+  return d;
+}
+function tegnFerdige() {
+  const box = $("#ferdige"); box.innerHTML = "";
+  const aktiv = ferdig();
+  FERDIGE.forEach(f => {
     const b = el("button", "choice"); b.type = "button";
-    b.setAttribute("aria-pressed", String(aktiv(it)));
-    const ic = el("span", "ic", it.ic); ic.setAttribute("aria-hidden", "true");
-    b.append(ic, el("b", null, it.navn), el("small", null, it.info));
-    b.addEventListener("click", () => pick(it));
+    b.setAttribute("aria-pressed", String(!!aktiv && aktiv.id === f.id));
+    const ic = el("span", "ic", f.ic); ic.setAttribute("aria-hidden", "true");
+    b.append(ic, el("b", null, f.navn), el("small", null, f.info));
+    b.addEventListener("click", () => {
+      if (aktiv && aktiv.id === f.id) { state.ferdig = ""; state.problem = ""; }
+      else { state.ferdig = f.id; state.problem = f.problem; }
+      $("#problem").value = state.problem; lagre(); tegnFerdige();
+    });
     box.append(b);
   });
 }
-function loop(nr) {
-  const d = el("div", "loop");
-  [["1", "Kopier teksten"], ["2", "Lim inn i Gemini og svar"], ["3", "Kom tilbake hit når Gemini skriver ➜"]].forEach(([n, t]) => {
-    const x = el("div"); x.append(el("b", null, n), el("span", null, t)); d.append(x);
-  });
-  const wrap = el("div", "steg");
-  const tips = el("div", "tipsrad");
-  tips.append(el("p", null, `Hopper Gemini videre for tidlig? Skriv: «Vent, vi er på steg ${nr}.»`),
-    el("p", null, "Henger du etter? Skriv: «Vi har dårlig tid. Avslutt dette steget nå med det du har.»"));
-  wrap.append(d, tips);
-  return wrap;
-}
 
-/* idékort */
+/* ---------- idékort ---------- */
 const norm = (s) => s.toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, " ").trim();
 const FELTMAP = Object.fromEntries(FELT.map(([k, l]) => [norm(l), k]));
 function lesKort(tekst) {
@@ -607,13 +550,17 @@ function lesKort(tekst) {
   return Object.keys(ut).length >= 3 ? ut : null;
 }
 function felt(lbl, verdi, tag) { const d = el("div"); d.append(el("span", "lbl", lbl), el(tag || "p", null, verdi || "–")); return d; }
+let TOPP = false;
 function tegnKort() {
-  const lest = state.kort.trim() ? lesKort(state.kort) : null;
-  $("#kort-feil").hidden = !(state.kort.trim() && !lest);
-  const d = lest || EKSEMPEL, erEks = !lest;
+  const t = state.kort.trim();
+  const d = t ? lesKort(t) : null;
+  $("#kort-feil").hidden = !(t && !d);
   const k = $("#kort"); k.innerHTML = "";
+  k.hidden = !d; $("#kort-knapper").hidden = !d; $("#kort-pdf").hidden = !d || !TOPP;
+  if (!d) return;
+  lastH2C().catch(() => {});
   const band = el("div", "band");
-  band.append(el("span", null, erEks ? "Eksempel på idékort" : "Idékort · KI-verkstedet"), el("span", null, erEks ? "IT" : (state.rolle || "Larvik kommune")));
+  band.append(el("span", null, "Idékort"), el("span", null, "KI-verkstedet"));
   const body = el("div", "body");
   body.append(el("h3", "tittel", d.ide || "Uten navn"));
   const par = el("div", "par");
@@ -631,84 +578,117 @@ function tegnKort() {
   fot.append(el("span", null, "Larvik kommune · Organisasjon"), el("span", null, new Date().toLocaleDateString("nb-NO", { day: "numeric", month: "long", year: "numeric" })));
   body.append(fot);
   k.append(band, body);
-  $("#kort-kopier").disabled = erEks;
 }
 function kortSomTekst() {
   const d = lesKort(state.kort); if (!d) return "";
-  return FELT.map(([k, l]) => `${l}: ${d[k] || "–"}`).concat(`Laget av: ${state.rolle || "–"}, Larvik kommune`).join("\n");
+  return FELT.map(([k, l]) => `${l}: ${d[k] || "–"}`).concat("", "Laget i KI-verkstedet, Larvik kommune").join("\n");
 }
-
-/* tegning */
-function render() {
-  const nav = $("#progress"); nav.innerHTML = "";
-  ["Lære", "Lage", "Prøve"].forEach(fase => {
-    const g = el("div", "grp" + (STEG[state.steg].fase === fase ? " aktiv" : ""));
-    g.append(el("span", null, fase));
-    const dots = el("div", "dots");
-    STEG.forEach((s, i) => {
-      if (s.fase !== fase) return;
-      const b = el("button"); b.type = "button"; b.style.setProperty("--c", FASEFARGE[fase]);
-      b.setAttribute("aria-label", `Steg ${i + 1}: ${s.navn}`); b.title = s.navn;
-      if (i === state.steg) b.setAttribute("aria-current", "step");
-      if (i < state.steg) b.dataset.done = "1";
-      b.addEventListener("click", () => gaTil(i));
-      dots.append(b);
-    });
-    g.append(dots); nav.append(g);
+function filnavn() {
+  const d = lesKort(state.kort) || {};
+  const s = (d.ide || "idekort").toLowerCase().replace(/æ/g, "ae").replace(/ø/g, "o").replace(/å/g, "a")
+    .normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40);
+  return "idekort-" + (s || "ki-verkstedet") + ".png";
+}
+let h2cLaster = null;
+function lastH2C() {
+  if (window.html2canvas) return Promise.resolve();
+  if (!h2cLaster) h2cLaster = new Promise((res, rej) => {
+    const s = document.createElement("script"); s.src = H2C; s.onload = res;
+    s.onerror = () => { h2cLaster = null; rej(); }; document.head.append(s);
   });
+  return h2cLaster;
+}
+async function kortBilde() {
+  await lastH2C();
+  const c = await window.html2canvas($("#kort"), { scale: 2, backgroundColor: getComputedStyle(document.body).backgroundColor });
+  return new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(), "image/png"));
+}
+const status = (t) => { $("#kort-status").textContent = t; };
+
+/* ---------- visning ---------- */
+function render() {
+  const fri = state.modus === "fri";
+  $("#fri").hidden = !fri;
+  $("#nav").hidden = fri;
   STEG.forEach((s, i) => {
     const sec = $("#s" + (i + 1));
-    sec.hidden = i !== state.steg;
-    sec.querySelector("[data-stamp]").textContent = `${s.fase} · steg ${i + 1} av ${STEG.length} · ca. ${s.min} min`;
+    sec.hidden = fri || i !== state.steg;
+    sec.querySelector("[data-stamp]").textContent = `Steg ${i + 1} av ${STEG.length} · ${s.fase}`;
   });
-
-  const rc = $("#roller"); rc.innerHTML = "";
-  Object.keys(ROLLER).forEach(r => {
-    const b = el("button", "chip", r); b.type = "button";
-    b.setAttribute("aria-pressed", String(r === state.rolle));
-    b.addEventListener("click", () => { state.rolle = r; $("#rolle-annet").value = ""; lagre(); render(); });
-    rc.append(b);
-  });
-  $("#problem").placeholder = ROLLER[state.rolle] ? "For eksempel: " + ROLLER[state.rolle] : "Skriv med egne ord …";
-  choices($("#ferdige"), FERDIGE, f => !!ferdig() && f.id === state.ferdig, f => {
-    Object.assign(state, { ferdig: f.id, problem: f.problem, bedre: f.bedre });
-    $("#problem").value = f.problem; $("#bedre").value = f.bedre; lagre(); render();
-  });
-
-  copycard($("#c1"), "Steg 2: Intervju", p1());
-  copycard($("#c2"), "Steg 3: Bygg", p2());
-  copycard($("#c3"), "Steg 4: Simulert bruker", P3);
-  copycard($("#c4"), "Steg 5: Tilbakemelding", p4());
-  copycard($("#c5"), "Steg 6: Ny gevinstvurdering", P5);
-  tegnKort();
-
-  $("#forrige").disabled = state.steg === 0;
+  $("#forrige").hidden = state.steg === 0;
   $("#neste").textContent = state.steg === STEG.length - 1 ? "Til start" : `Neste: ${STEG[state.steg + 1].navn} →`;
+  tegnFerdige();
+  tegnKort();
 }
-function gaTil(i) { state.steg = Math.max(0, Math.min(STEG.length - 1, i)); lagre(); render(); window.scrollTo(0, 0); }
+function gaTil(i) { state.steg = Math.max(0, Math.min(STEG.length - 1, i)); state.modus = "veiledet"; lagre(); render(); window.scrollTo(0, 0); }
+function modus(m, steg) { state.modus = m; if (steg != null) state.steg = steg; lagre(); render(); window.scrollTo(0, 0); }
 
-/* oppstart */
-[["s2", 2], ["s3", 3], ["s4", 4], ["s5", 5], ["s6", 6]].forEach(([id, nr]) => $("#" + id + " [data-loop]").replaceWith(loop(nr)));
-(function () { let topp = false; try { topp = window.self === window.top; } catch (e) {} $("#kort-pdf").hidden = !topp; })();
-$("#rolle-annet").addEventListener("input", e => {
-  state.rolle = e.target.value.trim(); lagre();
-  document.querySelectorAll("#roller .chip").forEach(c => c.setAttribute("aria-pressed", "false"));
-});
-$("#problem").addEventListener("input", e => { state.problem = e.target.value; lagre(); });
-$("#bedre").addEventListener("input", e => { state.bedre = e.target.value; lagre(); });
-$("#kort-inn").addEventListener("input", e => { state.kort = e.target.value; lagre(); tegnKort(); });
-$("#kort-kopier").addEventListener("click", e => { const t = kortSomTekst(); if (t) kopier(t, e.currentTarget, null); });
-$("#kort-pdf").addEventListener("click", () => { try { window.print(); } catch (e) {} });
-$("#forrige").addEventListener("click", () => gaTil(state.steg - 1));
-$("#neste").addEventListener("click", () => gaTil(state.steg === STEG.length - 1 ? 0 : state.steg + 1));
+/* ---------- oppstart ---------- */
+try { TOPP = window.self === window.top; } catch (e) {}
+document.querySelectorAll("[data-hjelp]").forEach(n => n.replaceWith(hjelp(n.dataset.hjelp)));
+copycard($("#c1"), "Start intervjuet", "Gemini stiller deg opptil fem spørsmål, ett om gangen.", p1);
+copycard($("#c2"), "Bygg prototypen", "Gemini lager en app du kan klikke i med en gang.", p2,
+  "Lim inn i Gemini, og vent til appen dukker opp.", "Prøv appen litt, og trykk «Neste» her.");
+copycard($("#c-juster"), "Be om endringene", "Gemini oppdaterer appen etter det du skrev.", pJuster);
+copycard($("#c3"), "Rett etter tilbakemeldingen", "Gemini retter det viktigste i appen.", p3);
+copycard($("#c3b"), "Simulert bruker", "Gemini later som den er en bruker og forteller hvor det skurrer.", p3b,
+  "Lim inn i Gemini, og velg hva som skal rettes.", "Kom tilbake hit når Gemini er ferdig.");
+copycard($("#c4"), "Lag idékortet", "Gemini stiller to korte spørsmål og skriver kortet ditt.", p4,
+  "Lim inn i Gemini, og svar på de to spørsmålene.", "Kopier idékortet fra Gemini, og lim det inn under.");
+
 $("#problem").value = state.problem || "";
-$("#bedre").value = state.bedre || "";
-$("#kort-inn").value = state.kort || "";
+$("#problem").addEventListener("input", e => { state.problem = e.target.value; lagre(); tegnFerdige(); });
+$("#juster").value = state.juster || "";
+$("#juster").addEventListener("input", e => { state.juster = e.target.value; lagre(); });
 ["liker", "lurer", "onsker"].forEach(k => {
   const f = $("#fb-" + k); f.value = state[k] || "";
-  f.addEventListener("input", e => { state[k] = e.target.value; lagre(); copycard($("#c4"), "Steg 5: Tilbakemelding", p4()); });
+  f.addEventListener("input", e => { state[k] = e.target.value; lagre(); });
 });
-if (state.rolle && !ROLLER[state.rolle]) $("#rolle-annet").value = state.rolle;
+$("#kort-inn").value = state.kort || "";
+$("#kort-inn").addEventListener("input", e => { state.kort = e.target.value; lagre(); tegnKort(); status(""); });
+
+$("#kort-kopier").addEventListener("click", e => { const t = kortSomTekst(); if (t) kopier(t, e.currentTarget, null, "Kopiert!"); });
+$("#kort-bilde").addEventListener("click", async e => {
+  const btn = e.currentTarget; btn.textContent = "Lager bilde …";
+  try {
+    const blob = await kortBilde();
+    const url = URL.createObjectURL(blob);
+    const a = el("a"); a.href = url; a.download = filnavn(); document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    status("Bildet er lastet ned.");
+  } catch (err) { status("Fikk ikke laget bildet her. Ta et skjermbilde av kortet i stedet."); }
+  btn.textContent = "Last ned som bilde";
+});
+$("#kort-epost").addEventListener("click", () => {
+  const d = lesKort(state.kort); if (!d) return;
+  const emne = "Idékort: " + (d.ide || "KI-verkstedet");
+  const tekst = kortSomTekst() + "\n\n(Last gjerne ned kortet som bilde og legg det ved.)";
+  const a = el("a"); a.href = `mailto:${MOTTAKER}?subject=${encodeURIComponent(emne)}&body=${encodeURIComponent(tekst)}`;
+  document.body.append(a); a.click(); a.remove();
+});
+if (navigator.share) {
+  $("#kort-del").hidden = false;
+  $("#kort-del").addEventListener("click", async () => {
+    const d = lesKort(state.kort); if (!d) return;
+    const tittel = "Idékort: " + (d.ide || "KI-verkstedet");
+    const tekst = kortSomTekst();
+    try {
+      let fil = null;
+      try { fil = new File([await kortBilde()], filnavn(), { type: "image/png" }); } catch (e) {}
+      if (fil && navigator.canShare && navigator.canShare({ files: [fil] })) await navigator.share({ files: [fil], title: tittel, text: tekst });
+      else await navigator.share({ title: tittel, text: tekst });
+    } catch (e) {
+      if (!e || e.name !== "AbortError") status("Deling virket ikke her. Prøv «Last ned som bilde» eller «Send på e-post».");
+    }
+  });
+}
+$("#kort-pdf").addEventListener("click", () => { try { window.print(); } catch (e) {} });
+
+$("#forrige").addEventListener("click", () => gaTil(state.steg - 1));
+$("#neste").addEventListener("click", () => gaTil(state.steg === STEG.length - 1 ? 0 : state.steg + 1));
+$("#til-fri").addEventListener("click", () => modus("fri"));
+$("#til-veiledet").addEventListener("click", () => modus("veiledet", 0));
+$("#til-kort").addEventListener("click", () => modus("veiledet", 5));
 render();
 </script>
 </body>

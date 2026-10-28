@@ -123,6 +123,26 @@ textarea.field:focus-visible { outline: 3px solid var(--note); outline-offset: 1
 .oppg b { font-family: var(--display); font-weight: 800; }
 .oppg span { color: var(--soft); font-size: 0.95rem; }
 
+/* andre former */
+.former-alle { display: flex; flex-direction: column; gap: 18px; margin-top: 14px; }
+.former-gruppe { display: flex; flex-direction: column; gap: 8px; }
+.former-gruppe h4 { margin: 0; font-family: var(--display); font-weight: 800; font-size: 1rem; }
+.former { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.form { border: 2px solid var(--ink); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; min-width: 0; background: var(--card); }
+.form b { font-family: var(--display); font-weight: 800; font-size: 1.05rem; }
+.form small { color: var(--soft); font-size: 0.92rem; line-height: 1.4; }
+.form em { font-style: normal; font-size: 0.86rem; color: var(--soft); border-left: 3px solid var(--note); padding-left: 8px; }
+.form .btn { align-self: flex-start; margin-top: auto; }
+
+/* LLP-blokker i «Bare oppgavene» */
+.llp { display: flex; flex-direction: column; gap: 12px; border-left: 6px solid var(--note); padding-left: 14px; }
+.llp-head { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.llp-tag { background: var(--note); color: var(--onnote); border: var(--line); border-radius: 99px; padding: 2px 14px; font-family: var(--display); font-weight: 800; font-size: 0.95rem; }
+.llp-ut { font-size: 0.95rem; }
+.oppg[start="3"] { counter-reset: o 2; }
+.oppg[start="5"] { counter-reset: o 4; }
+pre.format { white-space: pre-wrap; font-size: 0.88rem; color: var(--soft); margin: 10px 0 0; }
+
 /* idékort */
 .kort { --k: var(--mint); background: var(--card); color: var(--ink); border: var(--line); border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); overflow: hidden; }
 .kort .band { background: var(--k); color: var(--onnote); border-bottom: var(--line); padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; }
@@ -223,6 +243,11 @@ footer.nav .spacer { flex: 1; }
       <b>Ser du bare kode, og ingen app?</b>
       <span>Skriv «Vis den i Canvas». Hjelper ikke det, se etter Canvas under verktøyene i chatfeltet.</span>
     </div>
+    <details class="ekstra">
+      <summary>Ikke fornøyd? Prøv en annen form</summary>
+      <p class="muted">Samme problem kan løses på mange måter. Velg ut fra hva problemet egentlig handler om, og trykk «Prøv denne». Gemini bygger om prototypen med det samme innholdet.</p>
+      <div class="former-alle" id="former"></div>
+    </details>
     <div data-hjelp="3"></div>
   </section>
 
@@ -303,16 +328,52 @@ footer.nav .spacer { flex: 1; }
     <div class="hero">
       <span class="stamp">For deg som bruker KI mye</span>
       <h2>Bare <mark>oppgavene</mark></h2>
-      <p class="lead">Samme løp, men du skriver promptene selv i Gemini.</p>
+      <p class="lead">Du kan allerede prompte. Poenget i dag er å prøve <b>Lære, Lage, Prøve</b>: forstå problemet før du løser det, bygg noe som faktisk virker, og la ekte mennesker teste det. Du skriver promptene selv.</p>
     </div>
-    <ol class="oppg">
-      <li><b>Finn et problem</b><span>Noe fra jobben som skjer ofte, tar tid eller skaper frustrasjon.</span></li>
-      <li><b>La Gemini intervjue deg</b><span>Land én liten idé som kan bli en klikkbar prototype på 15 minutter. Noter hvor ofte det skjer og hvor lang tid det tar i dag. Last opp rutiner, maler eller tekster hvis du har.</span></li>
-      <li><b>Bygg prototypen i Canvas</b><span>Maks fem skjermer. Alt skal virke.</span></li>
-      <li><b>Juster selv</b><span>Prøv den, og be Gemini endre det du vil før noen andre ser den.</span></li>
-      <li><b>Test på sidemannen</b><span>Ikke forklar noe. Noter liker, lurer på og ønsker, og rett det viktigste. Vil du mer: la Gemini spille en kritisk bruker.</span></li>
-      <li><b>Lag et idékort</b><span>Problem, løsning, grovt anslag i timer per måned, hva du lærte og neste steg.</span></li>
-    </ol>
+
+    <div class="llp" data-fase="laere">
+      <div class="llp-head"><span class="llp-tag">Lære</span><h3>Forstå problemet før du løser det</h3></div>
+      <ol class="oppg">
+        <li><b>Velg et ekte problem</b><span>Noe fra jobben som skjer ofte, tar tid eller skaper frustrasjon. Ikke start med «hva kan KI gjøre?».</span></li>
+        <li><b>La Gemini intervjue deg, ikke svare deg</b><span>Be den stille spørsmål til du vet hvem som har problemet, hvordan det løses i dag, hvor ofte det skjer og hva det koster: tid, feil og avvik, dårlig kvalitet eller frustrasjon. Last opp rutiner, maler eller tekster du har.</span></li>
+      </ol>
+      <p class="llp-ut"><b>Ferdig når:</b> du kan si problemet i én setning, og vet hva som blir bedre, og for hvem.</p>
+    </div>
+
+    <div class="llp" data-fase="lage">
+      <div class="llp-head"><span class="llp-tag">Lage</span><h3>Bygg noe som virker, raskt</h3></div>
+      <ol class="oppg" start="3">
+        <li><b>Bygg den minste prototypen som kan testes</b><span>En klikkbar app i Canvas, maks fem skjermer. Alt skal virke. En skisse eller en beskrivelse teller ikke.</span></li>
+        <li><b>Juster selv først</b><span>Prøv den som om du var brukeren. Be Gemini rette det som er feil eller uklart, og sjekk at innholdet stemmer faglig.</span></li>
+      </ol>
+      <p class="llp-ut"><b>Ikke fornøyd med formen?</b> Be om en annen: søkbar FAQ, veiviser, sjekkliste, malgenerator, kalkulator, quiz, rollespill, dashboard eller prosesskart. Å bygge to former av samme idé og sammenligne er god Lage-praksis.</p>
+      <p class="llp-ut"><b>Ferdig når:</b> noen andre kan bruke den uten at du forklarer.</p>
+    </div>
+
+    <div class="llp" data-fase="prove">
+      <div class="llp-head"><span class="llp-tag">Prøve</span><h3>La andre teste, og vær ærlig om verdien</h3></div>
+      <ol class="oppg" start="5">
+        <li><b>Test på sidemannen</b><span>Ikke forklar noe. Se hvor hen stopper opp. Noter liker, lurer på og ønsker, og rett det viktigste. Vil du mer: la Gemini spille en kritisk bruker.</span></li>
+        <li><b>Vurder gevinsten på nytt</b><span>Tror du fortsatt på gevinsten etter testen? Hva ville det kreve å gjøre dette på ekte? Lag et idékort.</span></li>
+      </ol>
+      <p class="llp-ut"><b>Ferdig når:</b> du vet om ideen er verdt neste steg, og hvorfor.</p>
+    </div>
+
+    <div class="postit lilla">
+      <b>Legg merke til underveis</b>
+      <ul>
+        <li>Hvor mye endret problemet seg fra du startet til du hadde intervjuet deg selv?</li>
+        <li>Hva lærte du av å se noen andre bruke prototypen, som du ikke så selv?</li>
+        <li>Hvor tok KI feil, og hvordan oppdaget du det?</li>
+      </ul>
+    </div>
+
+    <details class="hjelp">
+      <summary>Idékortet bruker et fast format</summary>
+      <p>Be Gemini skrive kortet i en kodeblokk med disse overskriftene, så kan du lage plakat av det her:</p>
+      <pre class="format" id="kort-format"></pre>
+    </details>
+
     <div class="rules">
       <div class="ja"><b>Greit å laste opp</b><ul><li>Maler og standardbrev</li><li>Rutiner og veiledere</li><li>Tekster fra kommunens nettside</li></ul></div>
       <div class="nei"><b>Ikke greit</b><ul><li>Brev til en bestemt person</li><li>Saker med navn eller fødselsnummer</li><li>Helse- og personalsaker</li></ul></div>
@@ -368,10 +429,61 @@ Innen uka er omme: Les verdiplattformen og de etiske retningslinjene. Avtal opps
 ];
 const FELT = [
   ["ide", "IDÉ"], ["problem", "PROBLEM"], ["losning", "LØSNING"], ["hvem", "HVEM HAR NYTTE"],
-  ["bedre", "HVA BLIR BEDRE"], ["ofte", "HVOR OFTE"], ["tid", "TID I DAG"], ["anslag", "GROVT ANSLAG"],
+  ["bedre", "HVA BLIR BEDRE"], ["ofte", "HVOR OFTE"], ["maal", "SLIK MERKER VI DET"], ["anslag", "GROVT ANSLAG"],
   ["endret", "ENDRET ETTER TESTING"], ["laerdom", "DETTE LÆRTE JEG"], ["neste", "NESTE STEG"]
 ];
-const H2C = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+/* Former gruppert etter hva problemet handler om */
+const FORMER = [
+  { gruppe: "Folk spør om det samme", former: [
+    { navn: "Søkbar FAQ", hva: "en side med de vanligste spørsmålene og svarene, med søkefelt", eks: "15 typiske spørsmål om lønn og fravær" },
+    { navn: "Veiviser", hva: "en veiviser som stiller 4–5 korte spørsmål og leder til riktig svar", eks: "Hvilket skjema skal en ny leder bruke ved sykefravær?" },
+    { navn: "KI-assistent", vis: "En enkel chatbot som svarer ut fra rutinen din og sier fra når den ikke vet.", hva: "en enkel chatbot som svarer ut fra innholdet vårt og sier fra når den ikke vet", eks: "Spør IT om passord, skrivere og tilganger" }
+  ]},
+  { gruppe: "Folk gjør feil eller glemmer steg", former: [
+    { navn: "Sjekkliste", hva: "en sjekkliste med avkrysning som viser hva som gjenstår", eks: "Alt som må på plass før en ansatt slutter" },
+    { navn: "Plan med tidslinje", hva: "en interaktiv plan med tidslinje og avkrysning", eks: "En nyansatt sine første 30 dager" }
+  ]},
+  { gruppe: "Tunge tekster og skjemaer", former: [
+    { navn: "Malgenerator", hva: "et verktøy der jeg fyller inn noen felt og får et ferdig utkast", eks: "Innkalling til medarbeidersamtale" },
+    { navn: "Klarspråk før og etter", hva: "en side som viser originalteksten og en klarspråkversjon side om side, med forklaring på endringene", eks: "Et stivt svarbrev om permisjon" }
+  ]},
+  { gruppe: "Regning og vurdering tar tid", former: [
+    { navn: "Kalkulator", hva: "en kalkulator der jeg legger inn noen tall og får svaret med en gang", eks: "Stillingsprosent og timer → overtid og kostnad" },
+    { navn: "Prioriteringsmatrise", hva: "en 2x2-matrise der jeg klikker for å plassere punkter etter gevinst og innsats", eks: "Hvilke oppgaver bør vi forenkle først?" }
+  ]},
+  { gruppe: "Vanskelige situasjoner og ny kunnskap", former: [
+    { navn: "Øvingssamtale", vis: "Gemini spiller den andre parten i en vanskelig samtale og gir deg tilbakemelding etterpå.", hva: "et rollespill der du spiller den andre parten i en vanskelig samtale og gir meg tilbakemelding etterpå. Gjør dette her i chatten, ikke i Canvas", eks: "En ansatt som er misfornøyd med turnusen" },
+    { navn: "Quiz", hva: "en quiz med 6–8 spørsmål og forklaring etter hvert svar", eks: "Personvern for nyansatte" }
+  ]},
+  { gruppe: "Vi mangler oversikt", former: [
+    { navn: "Dashboard", hva: "et enkelt dashboard med tydelig merkede eksempeldata og filter", eks: "Sykefravær per avdeling per måned" },
+    { navn: "Prosesskart", hva: "et prosesskart fra start til slutt der flaskehalsene er markert, og der jeg kan klikke på et steg for å se detaljer", eks: "Innkjøp av IT-utstyr fra bestilling til levering" }
+  ]}
+];
+const pForm = (f) => `▶ Ny form på prototypen
+
+Jeg vil prøve en annen form. Lag løsningen vår som ${f.hva}.
+Bruk det samme problemet og innholdet som før, og behold det som virket. Passer ikke formen til problemet mitt, si det ærlig og foreslå et alternativ.
+${f.navn === "Øvingssamtale" ? "Start rollespillet når du har sagt kort hvem du er." : "Oppdater appen i Canvas og si kort hva du endret."}
+Avslutt med tilbake-linjen.`;
+function tegnFormer() {
+  const box = $("#former"); box.innerHTML = "";
+  FORMER.forEach(g => {
+    const gr = el("div", "former-gruppe");
+    gr.append(el("h4", null, g.gruppe));
+    const grid = el("div", "former");
+    g.former.forEach(f => {
+      const c = el("div", "form");
+      const btn = el("button", "btn small", "Prøv denne"); btn.type = "button"; btn.dataset.label = btn.textContent;
+      btn.addEventListener("click", () => kopier(pForm(f), btn, null, "Kopiert! Lim inn i Gemini"));
+      c.append(el("b", null, f.navn), el("small", null, f.vis || f.hva.split(". ")[0].replace(/^(en|et) /, "").replace(/^./, s => s.toUpperCase()) + "."), el("em", null, "Eks.: " + f.eks), btn);
+      grid.append(c);
+    });
+    gr.append(grid); box.append(gr);
+  });
+}
+
+const H2C ="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
 
 const state = { steg: 0, modus: "veiledet", problem: "", ferdig: "", juster: "", liker: "", lurer: "", onsker: "", kort: "" };
 try { Object.assign(state, JSON.parse(localStorage.getItem("ki-verksted-v7") || "{}")); } catch (e) {}
@@ -404,17 +516,17 @@ ${om}
 
 DIN OPPGAVE NÅ: Intervju meg, så vi lander én liten idé. Ikke lag noe ennå.
 - Still maks fem spørsmål, ett om gangen, merket «Spørsmål 1 av 5» osv. Vent på svar etter hvert spørsmål.
-- Finn ut: hva jeg jobber med, hvem som merker problemet, hvordan det løses i dag, hvor ofte det skjer og omtrent hvor lang tid det tar.
+- Finn ut: hva jeg jobber med, hvem som merker problemet, hvordan det løses i dag, hvor ofte det skjer, og hva det koster i dag. Tenk bredt: tid, feil og avvik, kvalitet, eller en dårlig opplevelse for innbyggere og ansatte.
 ${vedlegg}
 - Er jeg usikker, gi meg to–tre eksempler å velge mellom.
 
 RAMMER: Ideen skal kunne bli en klikkbar prototype på 15 minutter. Maks fem skjermer, ingen innlogging, ingen kobling til fagsystemer, ingen ekte personopplysninger.
 
 NÅR INTERVJUET ER FERDIG:
-- Foreslå 2–3 prototyper som passer, for eksempel en veiviser, en sjekkliste, en kalkulator eller en KI-assistent. Én setning om hver. La meg velge, og vent på svar.
+- Foreslå 2–3 prototyper i ulike former som passer problemet, for eksempel en veiviser, sjekkliste, søkbar FAQ, malgenerator, kalkulator, quiz, øvingssamtale, dashboard eller KI-assistent. Én setning om hver. La meg velge, og vent på svar.
 - Oppsummer så:
   IDEEN: én setning
-  GEVINST I DAG: hvor ofte × hvor lang tid = grovt anslag i timer per måned, og hva som blir bedre utover tid
+  GEVINST: hva blir bedre, og for hvem? Det kan være bedre kvalitet, bedre brukeropplevelse, færre avvik eller spart tid. Start med det viktigste. Ta med et grovt anslag der det gir mening, i timer, antall eller med ord.
 - Avslutt med tilbake-linjen.
 ${f ? "\n" + f.grunnlag + "\n" : ""}
 Start nå med Spørsmål 1 av 5, og ingenting annet.`;
@@ -451,11 +563,12 @@ List de tre viktigste funnene, spør hvilket jeg vil rette, og vent på svar. Re
 const p4 = () => `▶ STEG 6: Var det verdt det?
 
 Gå ut av eventuelle roller. Still meg to spørsmål, ett om gangen, og vent på svar etter hvert:
-1. Etter testingen: tror du fortsatt på gevinstanslaget fra steg 2? Hva har endret seg?
+1. Etter testingen: tror du fortsatt på gevinsten fra steg 2? Hva har endret seg?
 2. Hva lærte du om å bruke KI i dag?
 
 Skriv så idékortet i en kodeblokk. Bruk nøyaktig disse overskriftene med kolon, én linje per felt og maks to setninger per felt:
-${FELT.map(([, l]) => l + ":" + (l === "GROVT ANSLAG" ? " (timer per måned, vis regnestykket kort)" : "")).join("\n")}
+${FELT.map(([, l]) => l + ":" + (HINT[l] ? " " + HINT[l] : "")).join("\n")}
+Gevinst er mer enn spart tid. Får du ikke et tall som gir mening, beskriv gevinsten med ord.
 
 Under kodeblokken skriver du bare: «➜ Kopier idékortet, gå tilbake til nettsiden og lim det inn.»
 Start nå med spørsmål 1.`;
@@ -537,6 +650,12 @@ function tegnFerdige() {
 /* ---------- idékort ---------- */
 const norm = (s) => s.toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, " ").trim();
 const FELTMAP = Object.fromEntries(FELT.map(([k, l]) => [norm(l), k]));
+FELTMAP[norm("TID I DAG")] = "maal";
+const HINT = {
+  "HVA BLIR BEDRE": "(kvalitet, brukeropplevelse, færre avvik, tid – det viktigste først)",
+  "SLIK MERKER VI DET": "(et tegn på at det virker, f.eks. færre henvendelser, færre feil, kortere ventetid, fornøyde brukere)",
+  "GROVT ANSLAG": "(i timer, antall eller med ord – det som passer best)"
+};
 function lesKort(tekst) {
   const ut = {}; let sist = null;
   tekst.split(/\r?\n/).forEach(raw => {
@@ -568,10 +687,10 @@ function tegnKort() {
   const los = felt("Løsningen", d.losning); los.className = "los";
   par.append(felt("Problemet", d.problem), pil, los); body.append(par);
   const tall = el("div", "tall");
-  const h = felt("Grovt anslag", d.anslag, "b"); h.className = "hoved";
-  tall.append(felt("Hvor ofte", d.ofte, "b"), felt("Tid i dag", d.tid, "b"), h); body.append(tall);
+  const h = felt("Hva blir bedre", d.bedre, "b"); h.className = "hoved";
+  tall.append(h, felt("Slik merker vi det", d.maal, "b"), felt("Grovt anslag", d.anslag, "b")); body.append(tall);
   const sek = el("div", "seksjoner");
-  sek.append(felt("Hvem har nytte", d.hvem), felt("Hva blir bedre", d.bedre), felt("Endret etter testing", d.endret), felt("Neste steg", d.neste));
+  sek.append(felt("Hvem har nytte", d.hvem), felt("Hvor ofte", d.ofte), felt("Endret etter testing", d.endret), felt("Neste steg", d.neste));
   body.append(sek);
   if (d.laerdom) { const l = el("div", "laerte"); l.append(el("span", "lbl", "Dette lærte jeg"), el("p", null, d.laerdom)); body.append(l); }
   const fot = el("div", "fot");
@@ -636,6 +755,8 @@ copycard($("#c3b"), "Simulert bruker", "Gemini later som den er en bruker og for
 copycard($("#c4"), "Lag idékortet", "Gemini stiller to korte spørsmål og skriver kortet ditt.", p4,
   "Lim inn i Gemini, og svar på de to spørsmålene.", "Kopier idékortet fra Gemini, og lim det inn under.");
 
+tegnFormer();
+$("#kort-format").textContent = FELT.map(([, l]) => l + ":").join("\n");
 $("#problem").value = state.problem || "";
 $("#problem").addEventListener("input", e => { state.problem = e.target.value; lagre(); tegnFerdige(); });
 $("#juster").value = state.juster || "";
